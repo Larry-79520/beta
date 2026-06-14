@@ -501,6 +501,44 @@
       .small-print { font-size: 12px; }
       .parts-grid { grid-template-columns: 1fr; }
     }
+
+    .quotation-builder-wrap {
+      display: none;
+      margin-top: 28px;
+      border-radius: 28px;
+      overflow: hidden;
+      background: #000;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .quotation-builder-wrap.is-visible {
+      display: block;
+    }
+
+    .quotation-builder-frame {
+      display: block;
+      width: 100%;
+      min-height: 1800px;
+      border: 0;
+      background: #000;
+    }
+
+    .quotation-mode-hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 1200px) {
+      .quotation-builder-frame { min-height: 2500px; }
+    }
+
+    @media (max-width: 760px) {
+      .quotation-builder-wrap {
+        margin-right: -12px;
+        margin-left: -12px;
+        border-radius: 20px;
+      }
+      .quotation-builder-frame { min-height: 3100px; }
+    }
   </style>
 </head>
 <body>
@@ -515,7 +553,7 @@
             <button id="modeAppleCareBtn" class="mode-btn inactive" data-mode="applecare">iPad 維修服務選項</button>
             <button id="modeAppleWatchBtn" class="mode-btn inactive" data-mode="applewatch">Apple Watch 維修服務選項</button>
             <button id="modeAirPodsBtn" class="mode-btn inactive" data-mode="airpods">AirPods 維修服務選項</button>
-            <button id="modeOtherBtn" class="mode-btn inactive" data-mode="other">其他維修服務選項</button>
+            <button id="modeOtherBtn" class="mode-btn inactive" data-mode="other">報價單與其他維修服務選項</button>
             <button id="modeTierBtn" class="mode-btn inactive" data-mode="tier">Mac與iPad SUR 維修服務選項</button>
     </div>
 
@@ -545,6 +583,16 @@
           </a>
         </div>
 
+        <div class="quotation-builder-wrap" id="quotationBuilderWrap">
+          <iframe
+            class="quotation-builder-frame"
+            id="quotationBuilderFrame"
+            title="[i]Store 報價單產生器"
+            loading="lazy"
+            src="quotation-builder-standalone-v18-print-match-preview.html"
+          ></iframe>
+        </div>
+
         <div class="parts-panel" id="partsPanel">
           <h3 class="calculator-title">單一零件報價佔比金額</h3>
           <p class="calculator-note">最多輸入八個 GSX 單一零件未稅價格。系統會先加總並帶入 CPU 收費級距，再依 Numbers 公式分攤各零件的顧客報價。</p>
@@ -566,7 +614,7 @@
         </div>
 
         <div class="calculator" id="calculatorPanel">
-          <h3 class="calculator-title">AirPods Max 重新報價</h3>
+          <h3 class="calculator-title">AirPods Max 重新報價 與 Beats系列</h3>
           <p class="calculator-note">輸入 GSX 成本價格。依 Numbers 計算方式：毛利率 20.11%，加計 5% 營業稅後四捨五入至十位數。</p>
           <input class="calculator-input" id="costInput" type="number" min="0" step="1" inputmode="decimal" placeholder="輸入 GSX 成本價格" aria-label="GSX 成本價格" />
         </div>
@@ -2685,7 +2733,7 @@
 
     const otherServiceData = {
       "Apple Pencil Cap": [
-        { label: "交換價格", value: "500" },
+        { label: "1 個", value: "500" },
       ],
       "Apple Pencil 筆頭": [
         { label: "1 個", value: "150" },
@@ -2710,8 +2758,8 @@
         { label: "交換價格", value: "2,490" },
       ],
       "AirPods 耳塞": [
-        { label: "1 組（2 顆）", value: "150" },
-        { label: "2 組（4 顆）", value: "200" },
+        { label: "1 組（2 顆）", value: "200" },
+        { label: "2 組（4 顆）", value: "400" },
       ],
       "Beats EP": [
         { label: "頭戴式耳機交換價格", value: "2,190" },
@@ -2800,6 +2848,7 @@
       "AirPods Max 重新報價 與 Beats系列": [
         "AirPods Max 重新報價",
       ],
+      "報價單": [],
     };
 
     const tierCalculatorTypes = [
@@ -2846,6 +2895,22 @@
     const partInputs = [...document.querySelectorAll(".part-input")];
     const partsTotal = document.getElementById("partsTotal");
     const partsAllocationList = document.getElementById("partsAllocationList");
+    const quotationBuilderWrap = document.getElementById("quotationBuilderWrap");
+    const quotationModeTargets = [
+      assistLink,
+      partsPanel,
+      calculatorPanel,
+      document.querySelector(".content-grid"),
+      document.querySelector(".cta-row"),
+      document.querySelector(".small-print"),
+    ];
+
+    function setQuotationBuilderVisible(isVisible) {
+      quotationBuilderWrap.classList.toggle("is-visible", isVisible);
+      quotationModeTargets.forEach((element) => {
+        if (element) element.classList.toggle("quotation-mode-hidden", isVisible);
+      });
+    }
 
     for (const family of iphoneFamilies) {
       const option = document.createElement("option");
@@ -2914,6 +2979,17 @@
     }
 
     function renderOtherModelOptions(group, preferredModel = null) {
+      const isQuotationBuilder = group === "報價單";
+      setQuotationBuilderVisible(isQuotationBuilder);
+      if (isQuotationBuilder) {
+        modelControl.style.display = "none";
+        modelSelect.innerHTML = "";
+        modelSelect.value = "";
+        modelSelect.disabled = true;
+        serviceList.innerHTML = "";
+        return;
+      }
+
       const models = otherServiceGroups[group] || [];
       modelControl.style.display = models.length <= 1 ? "none" : "";
       modelSelect.disabled = models.length <= 1;
@@ -2930,6 +3006,7 @@
     }
 
     function updateOtherOptions(preferredGroup = "其他", preferredModel = null) {
+      setQuotationBuilderVisible(false);
       familySelect.disabled = false;
       familySelect.innerHTML = "";
       for (const group of Object.keys(otherServiceGroups)) {
@@ -3022,7 +3099,7 @@
       partsPanel.classList.remove("is-visible");
       costInput.readOnly = false;
       calculatorPanel.classList.add("is-visible");
-      calculatorTitle.textContent = "AirPods Max 重新報價";
+      calculatorTitle.textContent = "AirPods Max 重新報價 與 Beats系列";
       calculatorNote.textContent = "輸入 GSX 成本價格。依 Numbers 計算方式：毛利率 20.11%，加計 5% 營業稅後四捨五入至十位數。";
       costInput.placeholder = "輸入 GSX 成本價格";
       costInput.setAttribute("aria-label", "GSX 成本價格");
@@ -3039,7 +3116,7 @@
         { label: "售價（含稅）", value: hasCost ? formatNumber(afterTax) : "-", plain: !hasCost },
       ];
       serviceList.innerHTML = rows.map((row) => `
-        <li class="service-row">
+        <li class="service-row ${row.label === "售價（含稅）" ? "is-final-quote" : ""}">
           <span class="service-label">${row.label}</span>
           <span class="service-price">${row.plain ? row.value : (row.value === "請輸入" ? row.value : formatCell(row.value))}</span>
         </li>
@@ -3203,6 +3280,9 @@
     }
 
     function syncUI() {
+      if (currentMode !== "other") {
+        setQuotationBuilderVisible(false);
+      }
       if (currentMode === "tier") {
         costInput.value = "";
         renderTierCalculator(familySelect.value);
@@ -3257,6 +3337,7 @@
     const allModeButtons = [modeServiceBtn, modeAppleCareBtn, modeAppleWatchBtn, modeAirPodsBtn, modeOtherBtn, modeTierBtn];
 
     function setModeActive(activeBtn) {
+      setQuotationBuilderVisible(false);
       allModeButtons.forEach(btn => {
         if (btn === activeBtn) {
           btn.classList.add("active");
@@ -3303,8 +3384,8 @@
     modeOtherBtn.addEventListener("click", () => {
       setModeActive(modeOtherBtn);
       currentMode = "other";
-      sectionTitle.textContent = "[i]Store 其他維修服務";
-      sectionDescription.textContent = "請選擇其他裝置或 AirPods Max 與 Beats 系列，查看報價或重新計算售價。";
+      sectionTitle.textContent = "[i]Store 報價單與其他維修服務";
+      sectionDescription.textContent = "請選擇報價單、其他裝置或 AirPods Max 與 Beats 系列，建立報價或查看維修費用。";
       updateOtherOptions();
     });
 
