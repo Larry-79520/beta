@@ -2799,26 +2799,6 @@
       ],
       "AirPods Max 重新報價 與 Beats系列": [
         "AirPods Max 重新報價",
-        "Beats EP",
-        "Beats Pro",
-        "Beats Solo Pro",
-        "Beats Solo2",
-        "Beats Solo2 Wireless",
-        "Beats Solo3 Wireless",
-        "Beats Studio 2",
-        "Beats Studio 2 Wireless",
-        "Beats Studio 3 Wireless",
-        "BeatsX",
-        "Beats Flex",
-        "Powerbeats",
-        "Powerbeats Pro",
-        "Powerbeats2 Wireless",
-        "Powerbeats3 Wireless",
-        "Tour2",
-        "urBeats2",
-        "urBeats3",
-        "Beats Studio Buds",
-        "Beats Fit Pro",
       ],
     };
 
@@ -2935,8 +2915,8 @@
 
     function renderOtherModelOptions(group, preferredModel = null) {
       const models = otherServiceGroups[group] || [];
-      modelControl.style.display = "";
-      modelSelect.disabled = false;
+      modelControl.style.display = models.length <= 1 ? "none" : "";
+      modelSelect.disabled = models.length <= 1;
       modelSelect.innerHTML = "";
       for (const model of models) {
         const option = document.createElement("option");
@@ -2946,8 +2926,7 @@
       }
       const chosen = preferredModel && models.includes(preferredModel) ? preferredModel : models[0];
       modelSelect.value = chosen || "";
-      modelSelect.disabled = models.length === 0;
-      renderServices(modelSelect.value);
+      renderServices(chosen || "");
     }
 
     function updateOtherOptions(preferredGroup = "其他", preferredModel = null) {
