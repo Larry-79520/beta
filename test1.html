@@ -1,0 +1,3708 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>[i]Store 維修服務選項</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #000000;
+      --panel: #1f1f22;
+      --panel-2: #2a2a2f;
+      --panel-3: #34343a;
+      --line: rgba(255, 255, 255, 0.14);
+      --line-strong: rgba(255, 255, 255, 0.24);
+      --text: rgba(255, 255, 255, 0.96);
+      --muted: rgba(255, 255, 255, 0.58);
+      --muted-2: rgba(255, 255, 255, 0.40);
+      --blue: #0a84ff;
+      --blue-2: #2f9bff;
+      --shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(65, 74, 96, 0.18), transparent 42%),
+        linear-gradient(180deg, #050505 0%, #000 42%, #030303 100%);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", sans-serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    body {
+      padding: 48px 24px 56px;
+    }
+
+    .page {
+      max-width: 1480px;
+      margin: 0 auto;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 18px 16px 34px;
+      animation: fadeUp 700ms ease-out both;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(48px, 5vw, 86px);
+      line-height: 1.05;
+      font-weight: 700;
+      letter-spacing: -0.045em;
+    }
+
+    .hero p {
+      margin: 18px auto 0;
+      max-width: 960px;
+      font-size: clamp(20px, 2vw, 31px);
+      line-height: 1.5;
+      color: rgba(255, 255, 255, 0.92);
+      letter-spacing: 0.01em;
+    }
+
+    .panel {
+      margin-top: 16px;
+      background: linear-gradient(180deg, rgba(39, 39, 43, 0.98), rgba(28, 28, 31, 0.98));
+      border-radius: 34px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      overflow: hidden;
+      animation: fadeUp 900ms 80ms ease-out both;
+    }
+
+    .panel-inner {
+      padding: clamp(28px, 4vw, 56px);
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: clamp(34px, 2.8vw, 60px);
+      line-height: 1.08;
+      font-weight: 700;
+      margin: 24px 0 34px;
+      letter-spacing: -0.04em;
+    }
+
+    .selector-area {
+      max-width: 620px;
+      margin: 0 auto;
+    }
+
+    .control {
+      position: relative;
+      margin-bottom: 14px;
+    }
+
+    .control::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 18px;
+      pointer-events: none;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.24);
+    }
+
+    .control:focus-within::after {
+      box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.32),
+        0 0 0 3px rgba(10, 132, 255, 0.95);
+    }
+
+    .field-label {
+      position: absolute;
+      left: 18px;
+      top: 12px;
+      color: var(--muted-2);
+      font-size: 15px;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    select {
+      width: 100%;
+      border: 0;
+      outline: none;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background: linear-gradient(180deg, rgba(55, 55, 60, 0.96), rgba(45, 45, 50, 0.96));
+      color: var(--text);
+      border-radius: 18px;
+      padding: 36px 56px 16px 18px;
+      font-size: clamp(20px, 1.7vw, 28px);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      cursor: pointer;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.10);
+    }
+
+    select:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    option {
+      background: #2a2a2f;
+      color: rgba(255, 255, 255, 0.96);
+    }
+
+    .chevron {
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      width: 12px;
+      height: 12px;
+      border-right: 3px solid rgba(255, 255, 255, 0.38);
+      border-bottom: 3px solid rgba(255, 255, 255, 0.38);
+      transform: translateY(10px) rotate(45deg);
+      pointer-events: none;
+    }
+
+    .assist-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 8px auto 0;
+      color: var(--blue);
+      font-size: 18px;
+      text-decoration: none;
+      font-weight: 500;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .assist-link:hover {
+      color: var(--blue-2);
+    }
+
+    .assist-link span {
+      font-size: 24px;
+      line-height: 1;
+      transform: translateY(-1px);
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 24px;
+      align-items: start;
+      margin-top: 22px;
+    }
+
+    .summary {
+      margin-top: 6px;
+    }
+
+    .summary-head {
+      color: var(--muted);
+      font-size: 18px;
+      margin-bottom: 18px;
+      letter-spacing: 0.01em;
+    }
+
+    .service-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .service-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 24px;
+      align-items: center;
+      padding: 18px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      font-size: clamp(20px, 2vw, 28px);
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+
+    .service-label {
+      color: rgba(255, 255, 255, 0.94);
+    }
+
+    .service-price {
+      color: rgba(255, 255, 255, 0.96);
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+      justify-self: end;
+    }
+
+    .service-row.is-x .service-label,
+    .service-row.is-x .service-price {
+      color: rgba(255, 255, 255, 0.46);
+    }
+
+    .service-row.is-final-quote {
+      margin: 18px 0;
+      padding: 22px 20px;
+      border: 2px solid var(--blue);
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(10, 132, 255, 0.20), rgba(10, 132, 255, 0.08));
+      box-shadow:
+        0 0 0 4px rgba(10, 132, 255, 0.10),
+        0 14px 34px rgba(10, 132, 255, 0.16);
+      font-weight: 700;
+    }
+
+    .service-row.is-final-quote .service-price {
+      color: #78bdff;
+      font-size: 1.12em;
+    }
+
+    .footer-note {
+      margin-top: 18px;
+      color: rgba(255, 255, 255, 0.56);
+      font-size: 16px;
+      line-height: 1.7;
+    }
+
+    .cta-row {
+      display: flex;
+      justify-content: center;
+      padding: 34px 0 10px;
+    }
+
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      appearance: none;
+      border: 0;
+      border-radius: 999px;
+      padding: 22px 34px;
+      min-width: 280px;
+      background: linear-gradient(180deg, #0a84ff, #0672e6);
+      color: white;
+      text-decoration: none;
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      box-shadow:
+        0 16px 32px rgba(10, 132, 255, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.18);
+      cursor: pointer;
+      transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease;
+    }
+
+    .cta:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.04);
+      box-shadow:
+        0 18px 36px rgba(10, 132, 255, 0.34),
+        inset 0 1px 0 rgba(255, 255, 255, 0.18);
+    }
+
+    .cta:active {
+      transform: translateY(1px) scale(0.99);
+    }
+
+    .small-print {
+      margin-top: 20px;
+      color: rgba(255, 255, 255, 0.50);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .mode-switch {
+      display: flex;
+      justify-content: center;
+      max-width: 1480px;
+      margin: 32px auto 24px;
+      padding: 0 24px;
+    }
+
+    .mode-btn {
+      appearance: none;
+      border: none;
+      padding: 16px 28px;
+      font-size: clamp(16px, 2vw, 20px);
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 300ms ease;
+      letter-spacing: -0.01em;
+      min-width: auto;
+      flex: 1;
+      max-width: 300px;
+    }
+
+    .calculator {
+      display: none;
+      max-width: 620px;
+      margin: 24px auto 0;
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: linear-gradient(180deg, rgba(55, 55, 60, 0.72), rgba(38, 38, 43, 0.72));
+    }
+
+    .calculator.is-visible {
+      display: block;
+    }
+
+    .calculator-title {
+      margin: 0 0 8px;
+      font-size: 24px;
+      font-weight: 650;
+      letter-spacing: -0.02em;
+    }
+
+    .calculator-note {
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .calculator-input {
+      width: 100%;
+      border: 1px solid var(--line-strong);
+      outline: none;
+      border-radius: 16px;
+      padding: 16px 18px;
+      background: rgba(23, 23, 26, 0.88);
+      color: var(--text);
+      font-size: 24px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .calculator-input:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.28);
+    }
+
+    .parts-panel {
+      display: none;
+      max-width: 900px;
+      margin: 24px auto 0;
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: linear-gradient(180deg, rgba(55, 55, 60, 0.72), rgba(38, 38, 43, 0.72));
+    }
+
+    .parts-panel.is-visible {
+      display: block;
+    }
+
+    .parts-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .part-field {
+      display: grid;
+      gap: 7px;
+    }
+
+    .part-field label {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .part-input {
+      width: 100%;
+      border: 1px solid var(--line-strong);
+      outline: none;
+      border-radius: 14px;
+      padding: 13px 15px;
+      background: rgba(23, 23, 26, 0.88);
+      color: var(--text);
+      font-size: 20px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .part-input:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.22);
+    }
+
+    .parts-total {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      margin-top: 18px;
+      padding: 16px 18px;
+      border-radius: 15px;
+      background: rgba(10, 132, 255, 0.10);
+      border: 1px solid rgba(10, 132, 255, 0.34);
+      font-size: 20px;
+      font-weight: 650;
+    }
+
+    .parts-allocation {
+      margin-top: 18px;
+    }
+
+    .parts-allocation:empty {
+      display: none;
+    }
+
+    .mode-btn:first-child {
+      border-radius: 999px 0 0 999px;
+    }
+
+    .mode-btn:last-child {
+      border-radius: 0 999px 999px 0;
+    }
+
+    .mode-btn.inactive {
+      background: rgba(80, 80, 90, 0.8);
+      color: rgba(200, 200, 210, 0.8);
+    }
+
+    .mode-btn.inactive:hover {
+      background: rgba(90, 90, 100, 0.85);
+    }
+
+    .mode-btn.active {
+      background: rgba(255, 255, 255, 0.98);
+      color: rgba(0, 0, 0, 0.95);
+      box-shadow: none;
+    }
+
+    .mode-btn.active:hover {
+      background: rgba(255, 255, 255, 0.98);
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 1100px) {
+      body { padding: 28px 16px 36px; }
+      .selector-area { max-width: 100%; }
+      .mode-switch { flex-wrap: wrap; gap: 8px; }
+      .mode-btn,
+      .mode-btn:first-child,
+      .mode-btn:last-child {
+        flex: 1 1 calc(50% - 8px);
+        max-width: none;
+        border-radius: 999px;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .hero { padding-bottom: 22px; }
+      .panel-inner { padding: 24px 16px 28px; }
+      .section-title { margin-top: 16px; }
+      select { font-size: 18px; }
+      .assist-link { font-size: 16px; }
+      .assist-link span { font-size: 20px; }
+      .cta { min-width: 100%; width: 100%; font-size: 18px; padding: 18px 24px; }
+      .small-print { font-size: 12px; }
+      .parts-grid { grid-template-columns: 1fr; }
+    }
+
+    .quotation-builder-wrap {
+      display: none;
+      margin-top: 28px;
+    }
+
+    .quotation-builder-wrap.is-visible {
+      display: block;
+    }
+
+    .quotation-mode-hidden {
+      display: none !important;
+    }
+
+    .qb-workspace {
+      display: grid;
+      grid-template-columns: minmax(460px, 1fr) minmax(460px, 0.92fr);
+      gap: 24px;
+      align-items: start;
+    }
+
+    .qb-panel {
+      background: linear-gradient(180deg, rgba(39, 39, 43, 0.98), rgba(28, 28, 31, 0.98));
+      border-radius: 28px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      overflow: hidden;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+    }
+
+    .qb-panel-inner { padding: clamp(22px, 3vw, 38px); }
+    .qb-title { margin: 0 0 22px; font-size: clamp(27px, 2.2vw, 40px); line-height: 1.08; }
+    .qb-form-section { padding: 22px 0; border-top: 1px solid rgba(255, 255, 255, 0.14); }
+    .qb-form-section:first-of-type { border-top: 0; padding-top: 0; }
+    .qb-form-section h3 { margin: 0 0 16px; font-size: 22px; }
+    .qb-grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .qb-field { display: grid; gap: 7px; }
+    .qb-field label { color: rgba(255, 255, 255, 0.58); font-size: 14px; }
+
+    .quotation-builder-wrap input,
+    .quotation-builder-wrap textarea {
+      width: 100%;
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      outline: none;
+      border-radius: 14px;
+      padding: 13px 15px;
+      background: rgba(23, 23, 26, 0.88);
+      color: rgba(255, 255, 255, 0.96);
+      font-size: 17px;
+      font-family: inherit;
+    }
+
+    .quotation-builder-wrap textarea { min-height: 180px; line-height: 1.6; resize: vertical; }
+    .quotation-builder-wrap input:focus,
+    .quotation-builder-wrap textarea:focus { border-color: #0a84ff; box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.22); }
+    .qb-items-head, .qb-item-row { display: grid; grid-template-columns: 42px 1.05fr 2.85fr 0.65fr 0.95fr; gap: 8px; align-items: center; }
+    .qb-items-head { color: rgba(255, 255, 255, 0.58); font-size: 13px; padding: 4px 0 8px; }
+    .qb-item-row { margin-bottom: 8px; }
+    .qb-item-row input { padding: 11px 10px; font-size: 15px; border-radius: 12px; }
+    .qb-row-index { text-align: center; color: rgba(255, 255, 255, 0.58); }
+    .qb-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 18px; }
+    .qb-btn { appearance: none; border: 0; border-radius: 999px; padding: 15px 22px; min-width: 150px; background: linear-gradient(180deg, #0a84ff, #0672e6); color: white; font-size: 17px; font-weight: 650; cursor: pointer; }
+    .qb-btn.qb-secondary { background: rgba(80, 80, 90, 0.8); }
+    .qb-preview { position: sticky; top: 20px; }
+    .qb-preview-toolbar { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 14px; color: rgba(255, 255, 255, 0.58); }
+    .qb-paper-shell { background: rgba(255,255,255,0.06); border-radius: 24px; padding: 18px; border: 1px solid rgba(255,255,255,0.14); overflow: hidden; display: flex; justify-content: center; }
+    .qb-paper { width: 210mm; height: 297mm; max-height: 297mm; overflow: hidden; margin: 0 auto -83mm; background: #fff; color: #111; padding: 11mm 14mm 9mm; font-family: Arial, "Noto Sans TC", sans-serif; font-size: 10.2pt; box-shadow: 0 24px 70px rgba(0,0,0,0.38); transform: scale(0.72); transform-origin: top center; flex: 0 0 auto; }
+    .qb-quote-header { display: grid; grid-template-columns: 1fr 2fr 1fr; align-items: start; gap: 12px; margin-bottom: 6px; }
+    .qb-brand { font-size: 17pt; font-weight: 700; }
+    .qb-quote-title { text-align: center; line-height: 1.35; }
+    .qb-quote-title .qb-en { font-size: 15pt; font-weight: 700; }
+    .qb-quote-title .qb-zh { font-size: 14pt; font-weight: 700; }
+    .qb-quote-title .qb-doc { margin-top: 8px; font-size: 12pt; font-weight: 700; }
+    .qb-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+    .qb-table th, .qb-table td { border: 1px solid #555; padding: 3px 5px; vertical-align: middle; word-break: break-word; }
+    .qb-table th { background: #c9c9c9; font-weight: 500; text-align: center; }
+    .qb-info-table td { height: 22px; }
+    .qb-parts-table { margin-top: 10px; }
+    .qb-parts-table th, .qb-parts-table td { height: 22px; text-align: center; }
+    .qb-parts-table td:nth-child(3) { text-align: left; }
+    .qb-total-label { text-align: center !important; font-weight: 700; }
+    .qb-total-price { text-align: right !important; padding-right: 12px !important; }
+    .qb-note-box { border: 1px solid #555; border-top: 0; min-height: 92px; }
+    .qb-note-title { background: #c9c9c9; border-bottom: 1px solid #555; padding: 3px 5px; }
+    .qb-note-content { padding: 5px; white-space: pre-wrap; line-height: 1.35; min-height: 70px; }
+    .qb-terms { border: 0 solid #555; border-width: 0 1px 1px; padding: 5px; font-size: 7.7pt; line-height: 1.28; }
+    .qb-footer { margin-top: 4px; display: grid; grid-template-columns: 1.5fr 1fr; gap: 8px; font-size: 9.5pt; line-height: 1.3; }
+    .qb-footer .qb-date { align-self: end; }
+    .qb-footer-line { border-bottom: 1px solid #333; grid-column: 1 / -1; height: 2px; }
+    .qb-version { text-align: right; font-size: 8.5pt; margin-top: 4px; }
+    #quotationPrintOnly { display: none; }
+
+    @media (max-width: 1200px) {
+      .qb-workspace { grid-template-columns: 1fr; }
+      .qb-preview { position: static; }
+    }
+
+    @media (max-width: 760px) {
+      .qb-grid-2 { grid-template-columns: 1fr; }
+      .qb-items-head { display: none; }
+      .qb-item-row { grid-template-columns: 42px 1fr; }
+      .qb-item-row input { grid-column: 2; }
+      .qb-row-index { grid-row: 1 / span 4; }
+      .qb-paper { transform: scale(0.54); margin-left: 0; margin-bottom: -136mm; }
+    }
+
+    @page { size: A4 portrait; margin: 8mm; }
+    @media print {
+      html, body { background: #fff !important; margin: 0 !important; padding: 0 !important; }
+      body > .page { display: none !important; }
+      #quotationPrintOnly {
+        display: block !important;
+        width: 194mm !important;
+        height: 276mm !important;
+        overflow: hidden !important;
+      }
+      #quotationPrintOnly .qb-paper {
+        width: 194mm !important;
+        height: 276mm !important;
+        max-height: 276mm !important;
+        margin: 0 !important;
+        padding: 7mm 9mm 5mm !important;
+        box-shadow: none !important;
+        transform: none !important;
+        overflow: hidden !important;
+      }
+      #quotationPrintOnly .qb-info-table td { height: 20px !important; }
+      #quotationPrintOnly .qb-parts-table { margin-top: 7px !important; }
+      #quotationPrintOnly .qb-parts-table th,
+      #quotationPrintOnly .qb-parts-table td { height: 18px !important; padding: 2.5px 4px !important; }
+      #quotationPrintOnly .qb-note-box { min-height: 78px !important; }
+      #quotationPrintOnly .qb-note-content { min-height: 56px !important; line-height: 1.22 !important; }
+      #quotationPrintOnly .qb-terms { font-size: 6.6pt !important; line-height: 1.12 !important; padding: 3px 4px !important; }
+      #quotationPrintOnly .qb-footer { font-size: 8.3pt !important; line-height: 1.12 !important; }
+    }
+    /* Skin override: black gold only. Layout, content and behavior remain unchanged. */
+    :root { color-scheme:dark; --bg:#080706; --panel:#14110d; --panel-2:#1c1710; --panel-3:#2a2115; --line:rgba(214,166,77,.24); --line-strong:rgba(226,182,94,.52); --text:#f4ead8; --muted:rgba(244,234,216,.68); --muted-2:rgba(244,234,216,.46); --blue:#d6a64d; --blue-2:#edc77c; --shadow:0 30px 90px rgba(0,0,0,.62); }
+    html, body { background:linear-gradient(135deg,#080705 0%,#1b1309 46%,#080706 100%); color:var(--text); }
+    body { position:relative; isolation:isolate; overflow-x:hidden; }
+    body::before { content:""; position:fixed; z-index:-1; inset:-18%; pointer-events:none; background:radial-gradient(ellipse at 86% 26%,rgba(255,211,119,.18) 0 8%,transparent 27%),radial-gradient(ellipse at 3% 48%,rgba(189,128,34,.2) 0 9%,transparent 28%),radial-gradient(ellipse at 45% 116%,rgba(205,153,55,.16) 0 12%,transparent 35%),conic-gradient(from 204deg at 8% 51%,transparent 0deg 17deg,rgba(237,193,101,.34) 18deg 20deg,transparent 22deg 33deg,rgba(170,111,22,.24) 34deg 36deg,transparent 38deg 360deg); filter:blur(18px); opacity:.95; }
+    body::after { content:""; position:fixed; z-index:-1; inset:0; pointer-events:none; background:radial-gradient(ellipse at 0 52%,transparent 0 26%,rgba(240,190,88,.3) 27% 27.7%,transparent 29% 39%,rgba(181,119,28,.24) 40% 40.5%,transparent 42%),radial-gradient(ellipse at 102% 32%,transparent 0 30%,rgba(239,195,103,.22) 31% 31.4%,transparent 33%); filter:blur(9px); opacity:.82; }
+    .hero h1,.section-title { font-family:Georgia,"Noto Serif TC",serif; font-weight:400; letter-spacing:.015em; }
+    .hero p,#sectionDescription { color:rgba(244,234,216,.72)!important; }
+    .panel,.qb-panel { background:linear-gradient(145deg,rgba(35,26,16,.92),rgba(10,8,6,.96)); border:1px solid rgba(226,182,94,.46); box-shadow:0 24px 80px rgba(0,0,0,.66),0 0 45px rgba(210,153,45,.12), inset 0 1px 0 rgba(255,226,158,.08); }
+    select,.calculator,.parts-panel,.quotation-builder-wrap input,.quotation-builder-wrap textarea { background:linear-gradient(180deg,#211a11,#120f0b); border-color:rgba(214,166,77,.48); color:var(--text); }
+    select option { background:#211a11; color:#f4ead8; }
+    .control:focus-within::after { box-shadow:inset 0 0 0 1px rgba(237,199,124,.8),0 0 0 3px rgba(214,166,77,.18); }
+    .mode-btn.active,.cta,.qb-btn { background:linear-gradient(180deg,#e1b55e,#a87527); color:#1c1409; box-shadow:0 12px 30px rgba(174,122,40,.24),inset 0 1px 0 rgba(255,247,214,.55); }
+    .mode-btn.inactive { background:rgba(28,23,16,.9); color:rgba(244,234,216,.62); }
+    .service-row.is-final-quote,.parts-total.is-final-quote { border-color:#d6a64d; background:linear-gradient(180deg,rgba(214,166,77,.2),rgba(214,166,77,.06)); }
+    .service-row.is-final-quote .service-price,.service-row.is-final-quote .service-price,.assist-link,.qb-btn { color:#edc77c; }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <h1>[i]Store 維修服務</h1>
+      <p>選擇裝置與機型，立即查看估計維修費用。</p>
+    </section>
+
+    <div class="mode-switch">
+            <button id="modeServiceBtn" class="mode-btn active" data-mode="service">iPhone 維修服務選項</button>
+            <button id="modeAppleCareBtn" class="mode-btn inactive" data-mode="applecare">iPad 維修服務選項</button>
+            <button id="modeAppleWatchBtn" class="mode-btn inactive" data-mode="applewatch">Apple Watch 維修服務選項</button>
+            <button id="modeAirPodsBtn" class="mode-btn inactive" data-mode="airpods">AirPods 維修服務選項</button>
+            <button id="modeOtherBtn" class="mode-btn inactive" data-mode="other">報價單與其他維修服務選項</button>
+            <button id="modeTierBtn" class="mode-btn inactive" data-mode="tier">Mac與iPad SUR 維修服務選項</button>
+    </div>
+
+        <section class="panel" aria-label="維修服務選項">
+      <div class="panel-inner">
+        <div id="modeContent">
+                    <h2 class="section-title" id="sectionTitle">[i]Store 維修 快速估價與預約</h2>
+                    <p id="sectionDescription" style="text-align: center; font-size: clamp(18px, 1.8vw, 24px); color: rgba(255, 255, 255, 0.7); margin-top: 0; margin-bottom: 24px; line-height: 1.6; letter-spacing: 0.01em;">請選擇裝置類型與機型，查看估計維修服務費用。</p>
+        </div>
+                <h2 class="section-title">選擇你的裝置</h2>
+
+        <div class="selector-area">
+          <div class="control">
+            <div class="field-label">裝置類型</div>
+            <select id="familySelect" aria-label="裝置類型"></select>
+            <div class="chevron" aria-hidden="true"></div>
+          </div>
+
+          <div class="control" id="modelControl">
+            <div class="field-label">機型</div>
+            <select id="modelSelect" aria-label="機型"></select>
+            <div class="chevron" aria-hidden="true"></div>
+          </div>
+
+          <a class="assist-link" href="#" id="assistLink" aria-label="協助辨識你的機型">
+            協助辨識你的機型 <span aria-hidden="true">›</span>
+          </a>
+        </div>
+
+        <div class="quotation-builder-wrap" id="quotationBuilderWrap">
+          <div class="qb-workspace">
+            <section class="qb-panel">
+              <div class="qb-panel-inner">
+                <h2 class="qb-title">填寫報價單內容</h2>
+                <div class="qb-form-section">
+                  <h3>顧客資訊</h3>
+                  <div class="qb-grid-2">
+                    <div class="qb-field"><label for="qbRepairNo">維修單號</label><input id="qbRepairNo" value="R" /></div>
+                    <div class="qb-field"><label for="qbCustomerName">顧客姓名</label><input id="qbCustomerName" placeholder="例如：王小明 先生" /></div>
+                    <div class="qb-field"><label for="qbPhone">聯絡電話</label><input id="qbPhone" /></div>
+                    <div class="qb-field"><label for="qbEmail">電子郵件</label><input id="qbEmail" /></div>
+                  </div>
+                </div>
+                <div class="qb-form-section">
+                  <h3>產品資訊</h3>
+                  <div class="qb-grid-2">
+                    <div class="qb-field"><label for="qbCheckDate">檢測日期</label><input id="qbCheckDate" type="date" /></div>
+                    <div class="qb-field"><label for="qbWarranty">保固狀態</label><input id="qbWarranty" placeholder="例如：保固外 / Apple 有限保固" /></div>
+                    <div class="qb-field"><label for="qbModelNo">主機型號</label><input id="qbModelNo" placeholder="例如：IPHONE 14 PRO MAX,ROW,512GB" /></div>
+                    <div class="qb-field"><label for="qbSerialNo">主機序號</label><input id="qbSerialNo" /></div>
+                  </div>
+                </div>
+                <div class="qb-form-section">
+                  <h3>更換零件及相關費用</h3>
+                  <div class="qb-items-head"><span>項次</span><span>零件代號</span><span>品名</span><span>數量</span><span>價格</span></div>
+                  <div id="qbItems"></div>
+                  <div class="qb-actions">
+                    <button class="qb-btn qb-secondary" type="button" id="qbAddRowBtn">新增項次</button>
+                    <button class="qb-btn qb-secondary" type="button" id="qbClearRowsBtn">清空零件</button>
+                  </div>
+                </div>
+                <div class="qb-form-section">
+                  <h3>備註 Service Note</h3>
+                  <textarea id="qbServiceNote" placeholder="例如：硬體損壞 / 顯示器多條裂痕&#10;此為初步檢測之報價，本報價單於報價日期起 14 日內有效。"></textarea>
+                </div>
+                <div class="qb-actions">
+                  <button class="qb-btn" type="button" id="qbPrintBtn">生成報價單並列印</button>
+                </div>
+              </div>
+            </section>
+            <section class="qb-preview">
+              <div class="qb-preview-toolbar"><span>A4 預覽</span><span id="qbTotalHint">總價：NT$0</span></div>
+              <div class="qb-paper-shell">
+                <article class="qb-paper" id="qbQuotePaper">
+                  <header class="qb-quote-header">
+                    <div class="qb-brand">[i]Store</div>
+                    <div class="qb-quote-title">
+                      <div class="qb-en">Authorized Service Provider</div>
+                      <div class="qb-zh">蘋果授權維修中心</div>
+                      <div class="qb-doc">維修報價單</div>
+                    </div>
+                    <div></div>
+                  </header>
+                  <table class="qb-table qb-info-table">
+                    <colgroup><col style="width:49%"><col style="width:51%"></colgroup>
+                    <tr><th>顧客資訊</th><th>產品資訊</th></tr>
+                    <tr><td>維修單號：<span data-qb-out="qbRepairNo"></span></td><td>檢測日期：<span data-qb-out="qbCheckDate"></span></td></tr>
+                    <tr><td>顧客姓名：<span data-qb-out="qbCustomerName"></span></td><td>保固狀態：<span data-qb-out="qbWarranty"></span></td></tr>
+                    <tr><td>聯絡電話：<span data-qb-out="qbPhone"></span></td><td>主機型號：<span data-qb-out="qbModelNo"></span></td></tr>
+                    <tr><td>電子郵件：<span data-qb-out="qbEmail"></span></td><td>主機序號：<span data-qb-out="qbSerialNo"></span></td></tr>
+                  </table>
+                  <table class="qb-table qb-parts-table">
+                    <colgroup><col style="width:6%"><col style="width:16%"><col style="width:55%"><col style="width:8%"><col style="width:15%"></colgroup>
+                    <tr><th>項次</th><th colspan="4">更換零件及相關費用</th></tr>
+                    <tr><th></th><th>零件代號</th><th>品名</th><th>數量</th><th>價格</th></tr>
+                    <tbody id="qbPrintItems"></tbody>
+                    <tr><td colspan="4" class="qb-total-label">總價(含稅)</td><td class="qb-total-price" id="qbPrintTotal">0</td></tr>
+                  </table>
+                  <section class="qb-note-box">
+                    <div class="qb-note-title">備註 Service Note</div>
+                    <div class="qb-note-content" id="qbPrintNote"></div>
+                  </section>
+                  <section class="qb-terms">
+                    本報價單為初步檢測後之維修估價，實際維修費用仍須依現場檢測結果、零件供應狀況及原廠系統最終報價為準。<br>
+                    本報價單所列金額含稅，報價有效期限為報價日期起 14 日內。若超過有效期限、故障狀況變更、另有其他未檢出故障，或原廠零件價格調整，報價內容可能需重新確認。<br>
+                    顧客同意維修前，請詳閱並確認報價項目、維修內容及預估費用。維修過程中如發現其他異常或需追加維修項目，將另行通知顧客確認後再行處理。<br>
+                    送修設備內之資料、配件、保護貼、保護殼、SIM 卡、記憶卡或其他外接物品，請顧客於送修前自行備份及取下。本公司不負責資料遺失、軟體設定變更或未隨維修單註明之附屬物品保管責任。<br>
+                    維修完成後，請顧客於通知日起儘速取件。若因顧客因素延遲取件，相關保管責任及可能產生之費用，依門市現場規定辦理。<br>
+                    如須了解更多維修服務資訊，請洽 [i]Store 蘋果授權維修中心。
+                  </section>
+                  <footer class="qb-footer">
+                    <div><strong>[i]Store 蘋果授權維修中心</strong><br>立展資訊科技股份有限公司<br>台北市大同區南京西路36號2F<br>02-2558-0806</div>
+                    <div class="qb-date">日期：<span data-qb-out="qbFooterDate"></span></div>
+                    <div class="qb-footer-line"></div>
+                  </footer>
+                  <div class="qb-version">2026版</div>
+                </article>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <div class="parts-panel" id="partsPanel">
+          <h3 class="calculator-title">單一零件報價佔比金額</h3>
+          <p class="calculator-note">最多輸入八個 GSX 單一零件未稅價格。系統會先加總並帶入 CPU 收費級距，再依 Numbers 公式分攤各零件的顧客報價。</p>
+          <div class="parts-grid" id="partsGrid">
+            <div class="part-field"><label for="partCost1">零件 1</label><input class="part-input" id="partCost1" type="number" min="0" step="1" inputmode="decimal" placeholder="GSX 未稅價格" /></div>
+            <div class="part-field"><label for="partCost2">零件 2</label><input class="part-input" id="partCost2" type="number" min="0" step="1" inputmode="decimal" placeholder="GSX 未稅價格" /></div>
+            <div class="part-field"><label for="partCost3">零件 3</label><input class="part-input" id="partCost3" type="number" min="0" step="1" inputmode="decimal" placeholder="GSX 未稅價格" /></div>
+            <div class="part-field"><label for="partCost4">零件 4</label><input class="part-input" id="partCost4" type="number" min="0" step="1" inputmode="decimal" placeholder="GSX 未稅價格" /></div>
+            <div class="part-field"><label for="partCost5">零件 5</label><input class="part-input" id="partCost5" type="number" min="0" step="1" inputmode="decimal" placeholder="GSX 未稅價格" /></div>
+            <div class="part-field"><label for="partCost6">零件 6</label><input class="part-input" id="partCost6" type="number" min="0" step="1" inputmode="decimal" placeholder="GSX 未稅價格" /></div>
+            <div class="part-field"><label for="partCost7">零件 7</label><input class="part-input" id="partCost7" type="number" min="0" step="1" inputmode="decimal" placeholder="GSX 未稅價格" /></div>
+            <div class="part-field"><label for="partCost8">零件 8</label><input class="part-input" id="partCost8" type="number" min="0" step="1" inputmode="decimal" placeholder="GSX 未稅價格" /></div>
+          </div>
+          <ul class="service-list parts-allocation" id="partsAllocationList" aria-label="單一零件報價佔比金額"></ul>
+          <div class="parts-total is-final-quote">
+            <span>GSX 零件成本合計</span>
+            <span id="partsTotal">NT$0</span>
+          </div>
+        </div>
+
+        <div class="calculator" id="calculatorPanel">
+          <h3 class="calculator-title">AirPods Max 重新報價 與 Beats系列</h3>
+          <p class="calculator-note">輸入 GSX 成本價格。依 Numbers 計算方式：毛利率 20.11%，加計 5% 營業稅後四捨五入至十位數。</p>
+          <input class="calculator-input" id="costInput" type="number" min="0" step="1" inputmode="decimal" placeholder="輸入 GSX 成本價格" aria-label="GSX 成本價格" />
+        </div>
+
+        <div class="content-grid">
+          <div class="summary">
+                        <div class="summary-head">估計維修服務費用</div>
+            <ul class="service-list" id="serviceList" aria-label="估計維修服務費用"></ul>
+          </div>
+        </div>
+
+        <div class="cta-row">
+          <a class="cta" href="https://getsupport.apple.com/?caller=grl&locale=zh_TW" target="_blank" rel="noopener">預約維修服務</a>
+        </div>
+
+        <div class="small-print">
+          *實際費用需以現場檢測結果為準，頁面價格為估計參考。</div>
+      </div>
+    </section>
+  </main>
+  <div id="quotationPrintOnly" aria-hidden="true"></div>
+
+  <script>    const data = {
+      "iPhone 17 Pro Max": {
+        family: "iPhone 17",
+        whole: "29,800",
+        battery: "4,150",
+        screen: "13,790",
+        backSystem: "X",
+        middleSystem: "X",
+        backGlass: "5,690",
+        backGlassPlusScreen: "3,200",
+        frame: "11,700",
+        logicBoard: "13,200",
+        truedepth: "6,500",
+        rearCamera: "9,100",
+        speaker: "3,400",
+        receiver: "3,400",
+        mainParts: "3,400",
+        taptic: "3,290",
+        acWhole: "3,200",
+        acBattery: "0",
+        acScreen: "900",
+        acBackSystem: "X",
+        acMiddleSystem: "X",
+        acBackGlass: "900",
+        acBackGlassPlusScreen: "X",
+        acFrame: "X",
+        acLogicBoard: "X",
+        acTruedepth: "X",
+        acRearCamera: "X",
+        acSpeaker: "X",
+        acReceiver: "X",
+        acMainParts: "X",
+        acTaptic: "X",
+      },
+      "iPhone 17 Pro": {
+        family: "iPhone 17",
+        whole: "28,200",
+        battery: "4,150",
+        screen: "12,090",
+        backSystem: "X",
+        middleSystem: "X",
+        backGlass: "5,690",
+        backGlassPlusScreen: "3,090",
+        frame: "11,700",
+        logicBoard: "13,200",
+        truedepth: "6,500",
+        rearCamera: "9,100",
+        speaker: "3,400",
+        receiver: "3,400",
+        mainParts: "3,400",
+        taptic: "3,290",
+        acWhole: "3,200",
+        acBattery: "0",
+        acScreen: "900",
+        acBackSystem: "X",
+        acMiddleSystem: "X",
+        acBackGlass: "900",
+        acBackGlassPlusScreen: "X",
+        acFrame: "X",
+        acLogicBoard: "X",
+        acTruedepth: "X",
+        acRearCamera: "X",
+        acSpeaker: "X",
+        acReceiver: "X",
+        acMainParts: "X",
+        acTaptic: "X",
+      },
+      "iPhone 17": {
+        family: "iPhone 17",
+        whole: "21,500",
+        battery: "3,350",
+        screen: "12,090",
+        backSystem: "X",
+        middleSystem: "X",
+        backGlass: "5,690",
+        backGlassPlusScreen: "3,090",
+        frame: "9,200",
+        logicBoard: "11,790",
+        truedepth: "6,500",
+        rearCamera: "5,900",
+        speaker: "3,400",
+        receiver: "3,400",
+        mainParts: "3,400",
+        taptic: "3,290",
+        acWhole: "3,200",
+        acBattery: "0",
+        acScreen: "900",
+        acBackSystem: "X",
+        acMiddleSystem: "X",
+        acBackGlass: "900",
+        acBackGlassPlusScreen: "X",
+        acFrame: "X",
+        acLogicBoard: "X",
+        acTruedepth: "X",
+        acRearCamera: "X",
+        acSpeaker: "X",
+        acReceiver: "X",
+        acMainParts: "X",
+        acTaptic: "X",
+      },
+      "iPhone 17e": {
+        family: "iPhone 17",
+        whole: "16,900",
+        battery: "3,350",
+        screen: "9,390",
+        backSystem: "X",
+        middleSystem: "12,400",
+        backGlass: "5,690",
+        backGlassPlusScreen: "3,200",
+        frame: "X",
+        logicBoard: "X",
+        truedepth: "6,500",
+        rearCamera: "5,100",
+        speaker: "3,400",
+        receiver: "3,400",
+        mainParts: "3,400",
+        taptic: "3,290",
+        acWhole: "3,200",
+        acBattery: "0",
+        acScreen: "900",
+        acBackSystem: "X",
+        acMiddleSystem: "X",
+        acBackGlass: "900",
+        acBackGlassPlusScreen: "X",
+        acFrame: "X",
+        acLogicBoard: "X",
+        acTruedepth: "X",
+        acRearCamera: "X",
+        acSpeaker: "X",
+        acReceiver: "X",
+        acMainParts: "X",
+        acTaptic: "X",
+      },
+      "iPhone Air": {
+        family: "iPhone Air",
+        whole: "24,900",
+        battery: "4,150",
+        screen: "12,090",
+        backSystem: "X",
+        middleSystem: "X",
+        backGlass: "5,690",
+        backGlassPlusScreen: "3,090",
+        frame: "11,700",
+        logicBoard: "13,200",
+        truedepth: "6,500",
+        rearCamera: "5,900",
+        speaker: "X",
+        receiver: "3,400",
+        mainParts: "4,400",
+        taptic: "3,290",
+        acWhole: "3,200",
+        acBattery: "0",
+        acScreen: "900",
+        acBackSystem: "X",
+        acMiddleSystem: "X",
+        acBackGlass: "900",
+        acBackGlassPlusScreen: "X",
+        acFrame: "X",
+        acLogicBoard: "X",
+        acTruedepth: "X",
+        acRearCamera: "X",
+        acSpeaker: "X",
+        acReceiver: "X",
+        acMainParts: "X",
+        acTaptic: "X",
+      },
+      "iPhone 16 Pro Max": {
+        family: "iPhone 16",
+        whole: "27,900",
+        battery: "4,150",
+        screen: "12,790",
+        backSystem: "X",
+        middleSystem: "18,690",
+        backGlass: "5,690",
+        backGlassPlusScreen: "3,200",
+        frame: "X",
+        logicBoard: "X",
+        truedepth: "6,500",
+        rearCamera: "9,100",
+        speaker: "3,400",
+        receiver: "3,400",
+        mainParts: "5,900",
+        taptic: "3,290",
+        acWhole: "3,200",
+        acBattery: "0",
+        acScreen: "900",
+        acBackSystem: "X",
+        acMiddleSystem: "X",
+        acBackGlass: "900",
+        acBackGlassPlusScreen: "X",
+        acFrame: "X",
+        acLogicBoard: "X",
+        acTruedepth: "X",
+        acRearCamera: "X",
+        acSpeaker: "X",
+        acReceiver: "X",
+        acMainParts: "X",
+        acTaptic: "X",
+      },
+      "iPhone 16 Pro": {
+        family: "iPhone 16",
+        whole: "22,800",
+        battery: "4,150",
+        screen: "11,200",
+        backSystem: "X",
+        middleSystem: "16,900",
+        backGlass: "5,690",
+        backGlassPlusScreen: "3,090",
+        frame: "X",
+        logicBoard: "X",
+        truedepth: "6,500",
+        rearCamera: "9,100",
+        speaker: "3,400",
+        receiver: "3,400",
+        mainParts: "5,900",
+        taptic: "3,290",
+        acWhole: "3,200",
+        acBattery: "0",
+        acScreen: "900",
+        acBackSystem: "X",
+        acMiddleSystem: "X",
+        acBackGlass: "900",
+        acBackGlassPlusScreen: "X",
+        acFrame: "X",
+        acLogicBoard: "X",
+        acTruedepth: "X",
+        acRearCamera: "X",
+        acSpeaker: "X",
+        acReceiver: "X",
+        acMainParts: "X",
+        acTaptic: "X",
+      },
+      "iPhone 16 Plus": {
+        family: "iPhone 16",
+        whole: "21,400",
+        battery: "3,350",
+        screen: "11,200",
+        backSystem: "X",
+        middleSystem: "15,000",
+        backGlass: "5,690",
+        backGlassPlusScreen: "3,090",
+        frame: "X",
+        logicBoard: "X",
+        truedepth: "6,500",
+        rearCamera: "5,900",
+        speaker: "3,400",
+        receiver: "3,400",
+        mainParts: "5,900",
+        taptic: "3,290",
+        acWhole: "3,200",
+        acBattery: "0",
+        acScreen: "900",
+        acBackSystem: "X",
+        acMiddleSystem: "X",
+        acBackGlass: "900",
+        acBackGlassPlusScreen: "X",
+        acFrame: "X",
+        acLogicBoard: "X",
+        acTruedepth: "X",
+        acRearCamera: "X",
+        acSpeaker: "X",
+        acReceiver: "X",
+        acMainParts: "X",
+        acTaptic: "X",
+      },
+      "iPhone 16": {
+        family: "iPhone 16",
+        whole: "19,300",
+        battery: "3,350",
+        screen: "9,300",
+        backSystem: "X",
+        middleSystem: "13,490",
+        backGlass: "5,690",
+        backGlassPlusScreen: "3,200",
+        frame: "X",
+        logicBoard: "X",
+        truedepth: "6,500",
+        rearCamera: "5,900",
+        speaker: "3,400",
+        receiver: "3,400",
+        mainParts: "5,900",
+        taptic: "3,290",
+        acWhole: "3,200",
+        acBattery: "0",
+        acScreen: "900",
+        acBackSystem: "X",
+        acMiddleSystem: "X",
+        acBackGlass: "900",
+        acBackGlassPlusScreen: "X",
+        acFrame: "X",
+        acLogicBoard: "X",
+        acTruedepth: "X",
+        acRearCamera: "X",
+        acSpeaker: "X",
+        acReceiver: "X",
+        acMainParts: "X",
+        acTaptic: "X",
+      },
+      "iPhone 16e": {
+        family: "iPhone 16",
+        whole: "16,900",
+        battery: "3,350",
+        screen: "8,690",
+        backSystem: "X",
+        middleSystem: "12,400",
+        backGlass: "5,690",
+        backGlassPlusScreen: "3,200",
+        frame: "X",
+        logicBoard: "X",
+        truedepth: "6,500",
+        rearCamera: "5,100",
+        speaker: "3,400",
+        receiver: "3,400",
+        mainParts: "3,400",
+        taptic: "3,290",
+        acWhole: "3,200",
+        acBattery: "0",
+        acScreen: "900",
+        acBackSystem: "X",
+        acMiddleSystem: "X",
+        acBackGlass: "900",
+        acBackGlassPlusScreen: "X",
+        acFrame: "X",
+        acLogicBoard: "X",
+        acTruedepth: "X",
+        acRearCamera: "X",
+        acSpeaker: "X",
+        acReceiver: "X",
+        acMainParts: "X",
+        acTaptic: "X",
+      },
+      "iPhone 15 Pro Max": {
+        family: "iPhone 15",
+        whole: "24,900",
+        battery: "3,350",
+        screen: "12,900",
+        backSystem: "X",
+        middleSystem: "18,690",
+        backGlass: "5,690",
+        backGlassPlusScreen: "3,200",
+        frame: "X",
+        logicBoard: "X",
+        truedepth: "6,500",
+        rearCamera: "9,100",
+        speaker: "3,400",
+        receiver: "3,400",
+        mainParts: "X",
+        taptic: "3,290",
+        acWhole: "3,200",
+        acBattery: "0",
+        acScreen: "900",
+        acBackSystem: "X",
+        acMiddleSystem: "X",
+        acBackGlass: "900",
+        acBackGlassPlusScreen: "X",
+        acFrame: "X",
+        acLogicBoard: "X",
+        acTruedepth: "X",
+        acRearCamera: "X",
+        acSpeaker: "X",
+        acReceiver: "X",
+        acMainParts: "X",
+        acTaptic: "X",
+      },
+      "iPhone 15 Pro": {
+        family: "iPhone 15",
+        whole: "22,800",
+        battery: "3,350",
+        screen: "11,300",
+        backSystem: "X",
+        middleSystem: "16,900",
+        backGlass: "5,690",
+        backGlassPlusScreen: "3,090",
+        frame: "X",
+        logicBoard: "X",
+        truedepth: "6,500",
+        rearCamera: "7,700",
+        speaker: "3,400",
+        receiver: "3,400",
+        mainParts: "X",
+        taptic: "3,290",
+        acWhole: "3,200",
+        acBattery: "0",
+        acScreen: "900",
+        acBackSystem: "X",
+        acMiddleSystem: "X",
+        acBackGlass: "900",
+        acBackGlassPlusScreen: "X",
+        acFrame: "X",
+        acLogicBoard: "X",
+        acTruedepth: "X",
+        acRearCamera: "X",
+        acSpeaker: "X",
+        acReceiver: "X",
+        acMainParts: "X",
+        acTaptic: "X",
+      },
+      "iPhone 15 Plus": {
+        family: "iPhone 15",
+        whole: "21,400",
+        battery: "3,350",
+        screen: "11,300",
+        backSystem: "X",
+        middleSystem: "15,000",
+        backGlass: "5,690",
+        backGlassPlusScreen: "3,090",
+        frame: "X",
+        logicBoard: "X",
+        truedepth: "6,500",
+        rearCamera: "5,900",
+        speaker: "3,400",
+        receiver: "3,400",
+        mainParts: "X",
+        taptic: "3,290",
+        acWhole: "3,200",
+        acBattery: "0",
+        acScreen: "900",
+        acBackSystem: "X",
+        acMiddleSystem: "X",
+        acBackGlass: "900",
+        acBackGlassPlusScreen: "X",
+        acFrame: "X",
+        acLogicBoard: "X",
+        acTruedepth: "X",
+        acRearCamera: "X",
+        acSpeaker: "X",
+        acReceiver: "X",
+        acMainParts: "X",
+        acTaptic: "X",
+      },
+      "iPhone 15": {
+        family: "iPhone 15",
+        whole: "19,300",
+        battery: "3,350",
+        screen: "9,400",
+        backSystem: "X",
+        middleSystem: "13,490",
+        backGlass: "5,690",
+        backGlassPlusScreen: "3,200",
+        frame: "X",
+        logicBoard: "X",
+        truedepth: "6,500",
+        rearCamera: "5,900",
+        speaker: "3,400",
+        receiver: "3,400",
+        mainParts: "X",
+        taptic: "3,290",
+        acWhole: "3,200",
+        acBattery: "0",
+        acScreen: "900",
+        acBackSystem: "X",
+        acMiddleSystem: "X",
+        acBackGlass: "900",
+        acBackGlassPlusScreen: "X",
+        acFrame: "X",
+        acLogicBoard: "X",
+        acTruedepth: "X",
+        acRearCamera: "X",
+        acSpeaker: "X",
+        acReceiver: "X",
+        acMainParts: "X",
+        acTaptic: "X",
+      },
+      "iPhone 14 Pro Max": {
+        family: "iPhone 14",
+        whole: "24,900",
+        battery: "3,350",
+        screen: "12,900",
+        backSystem: "18,800",
+        middleSystem: "X",
+        backGlass: "X",
+        backGlassPlusScreen: "X",
+        frame: "X",
+        logicBoard: "X",
+        truedepth: "6,500",
+        rearCamera: "7,700",
+        speaker: "3,400",
+        receiver: "3,400",
+        mainParts: "X",
+        taptic: "3,290",
+        acWhole: "3,200",
+        acBattery: "0",
+        acScreen: "900",
+        acBackSystem: "X",
+        acMiddleSystem: "X",
+        acBackGlass: "900",
+        acBackGlassPlusScreen: "X",
+        acFrame: "X",
+        acLogicBoard: "X",
+        acTruedepth: "X",
+        acRearCamera: "X",
+        acSpeaker: "X",
+        acReceiver: "X",
+        acMainParts: "X",
+        acTaptic: "X",
+      },
+      "iPhone 14 Pro": {
+        family: "iPhone 14",
+        whole: "22,800",
+        battery: "3,350",
+        screen: "11,300",
+        backSystem: "17,000",
+        middleSystem: "X",
+        backGlass: "X",
+        backGlassPlusScreen: "X",
+        frame: "X",
+        logicBoard: "X",
+        truedepth: "6,500",
+        rearCamera: "7,700",
+        speaker: "3,400",
+        receiver: "3,400",
+        mainParts: "X",
+        taptic: "3,290",
+        acWhole: "3,200",
+        acBattery: "0",
+        acScreen: "900",
+        acBackSystem: "X",
+        acMiddleSystem: "X",
+        acBackGlass: "900",
+        acBackGlassPlusScreen: "X",
+        acFrame: "X",
+        acLogicBoard: "X",
+        acTruedepth: "X",
+        acRearCamera: "X",
+        acSpeaker: "X",
+        acReceiver: "X",
+        acMainParts: "X",
+        acTaptic: "X",
+      },
+      "iPhone 14 Plus": {
+        family: "iPhone 14",
+        whole: "21,400",
+        battery: "3,350",
+        screen: "11,300",
+        backSystem: "X",
+        middleSystem: "15,000",
+        backGlass: "5,690",
+        backGlassPlusScreen: "3,090",
+        frame: "X",
+        logicBoard: "X",
+        truedepth: "6,500",
+        rearCamera: "5,900",
+        speaker: "3,400",
+        receiver: "3,400",
+        mainParts: "X",
+        taptic: "3,290",
+        acWhole: "3,200",
+        acBattery: "0",
+        acScreen: "900",
+        acBackSystem: "X",
+        acMiddleSystem: "X",
+        acBackGlass: "900",
+        acBackGlassPlusScreen: "X",
+        acFrame: "X",
+        acLogicBoard: "X",
+        acTruedepth: "X",
+        acRearCamera: "X",
+        acSpeaker: "X",
+        acReceiver: "X",
+        acMainParts: "X",
+        acTaptic: "X",
+      },
+      "iPhone 14": {
+        family: "iPhone 14",
+        whole: "18,300",
+        battery: "3,350",
+        screen: "9,400",
+        backSystem: "X",
+        middleSystem: "13,490",
+        backGlass: "5,690",
+        backGlassPlusScreen: "3,200",
+        frame: "X",
+        logicBoard: "X",
+        truedepth: "6,500",
+        rearCamera: "5,900",
+        speaker: "3,400",
+        receiver: "3,400",
+        mainParts: "X",
+        taptic: "3,290",
+        acWhole: "3,200",
+        acBattery: "0",
+        acScreen: "900",
+        acBackSystem: "X",
+        acMiddleSystem: "X",
+        acBackGlass: "900",
+        acBackGlassPlusScreen: "X",
+        acFrame: "X",
+        acLogicBoard: "X",
+        acTruedepth: "X",
+        acRearCamera: "X",
+        acSpeaker: "X",
+        acReceiver: "X",
+        acMainParts: "X",
+        acTaptic: "X",
+      },
+      "iPhone 13 Pro Max": {
+        family: "iPhone 13",
+        whole: "21,400",
+        battery: "2,990",
+        screen: "11,300",
+        backSystem: "17,000",
+        middleSystem: "X",
+        backGlass: "X",
+        backGlassPlusScreen: "X",
+        frame: "X",
+        logicBoard: "X",
+        truedepth: "6,500",
+        rearCamera: "6,390",
+        speaker: "3,400",
+        receiver: "3,400",
+        mainParts: "X",
+        taptic: "3,290",
+        acWhole: "3,200",
+        acBattery: "0",
+        acScreen: "900",
+        acBackSystem: "X",
+        acMiddleSystem: "X",
+        acBackGlass: "900",
+        acBackGlassPlusScreen: "X",
+        acFrame: "X",
+        acLogicBoard: "X",
+        acTruedepth: "X",
+        acRearCamera: "X",
+        acSpeaker: "X",
+        acReceiver: "X",
+        acMainParts: "X",
+        acTaptic: "X",
+      },
+      "iPhone 13 Pro": {
+        family: "iPhone 13",
+        whole: "18,300",
+        battery: "2,990",
+        screen: "9,400",
+        backSystem: "15,190",
+        middleSystem: "X",
+        backGlass: "X",
+        backGlassPlusScreen: "X",
+        frame: "X",
+        logicBoard: "X",
+        truedepth: "6,500",
+        rearCamera: "6,390",
+        speaker: "3,400",
+        receiver: "3,400",
+        mainParts: "X",
+        taptic: "3,290",
+        acWhole: "3,200",
+        acBattery: "0",
+        acScreen: "900",
+        acBackSystem: "X",
+        acMiddleSystem: "X",
+        acBackGlass: "900",
+        acBackGlassPlusScreen: "X",
+        acFrame: "X",
+        acLogicBoard: "X",
+        acTruedepth: "X",
+        acRearCamera: "X",
+        acSpeaker: "X",
+        acReceiver: "X",
+        acMainParts: "X",
+        acTaptic: "X",
+      },
+      "iPhone 13": {
+        family: "iPhone 13",
+        whole: "15,000",
+        battery: "2,990",
+        screen: "9,400",
+        backSystem: "11,600",
+        middleSystem: "X",
+        backGlass: "X",
+        backGlassPlusScreen: "X",
+        frame: "X",
+        logicBoard: "X",
+        truedepth: "6,500",
+        rearCamera: "5,900",
+        speaker: "3,400",
+        receiver: "3,400",
+        mainParts: "X",
+        taptic: "3,290",
+        acWhole: "3,200",
+        acBattery: "0",
+        acScreen: "900",
+        acBackSystem: "X",
+        acMiddleSystem: "X",
+        acBackGlass: "900",
+        acBackGlassPlusScreen: "X",
+        acFrame: "X",
+        acLogicBoard: "X",
+        acTruedepth: "X",
+        acRearCamera: "X",
+        acSpeaker: "X",
+        acReceiver: "X",
+        acMainParts: "X",
+        acTaptic: "X",
+      },
+      "iPhone 13 Mini": {
+        family: "iPhone 13",
+        whole: "14,400",
+        battery: "2,990",
+        screen: "7,590",
+        backSystem: "9,800",
+        middleSystem: "X",
+        backGlass: "X",
+        backGlassPlusScreen: "X",
+        frame: "X",
+        logicBoard: "X",
+        truedepth: "6,500",
+        rearCamera: "5,900",
+        speaker: "3,400",
+        receiver: "3,400",
+        mainParts: "X",
+        taptic: "3,290",
+        acWhole: "3,200",
+        acBattery: "0",
+        acScreen: "900",
+        acBackSystem: "X",
+        acMiddleSystem: "X",
+        acBackGlass: "900",
+        acBackGlassPlusScreen: "X",
+        acFrame: "X",
+        acLogicBoard: "X",
+        acTruedepth: "X",
+        acRearCamera: "X",
+        acSpeaker: "X",
+        acReceiver: "X",
+        acMainParts: "X",
+        acTaptic: "X",
+      },
+      "iPhone 12 Pro Max": {
+        family: "iPhone 12",
+        whole: "21,400",
+        battery: "2,990",
+        screen: "11,300",
+        backSystem: "17,000",
+        middleSystem: "X",
+        backGlass: "X",
+        backGlassPlusScreen: "X",
+        frame: "X",
+        logicBoard: "X",
+        truedepth: "5,690",
+        rearCamera: "6,390",
+        speaker: "3,400",
+        receiver: "X",
+        mainParts: "X",
+        taptic: "3,290",
+        acWhole: "3,200",
+        acBattery: "0",
+        acScreen: "900",
+        acBackSystem: "X",
+        acMiddleSystem: "X",
+        acBackGlass: "900",
+        acBackGlassPlusScreen: "X",
+        acFrame: "X",
+        acLogicBoard: "X",
+        acTruedepth: "X",
+        acRearCamera: "X",
+        acSpeaker: "X",
+        acReceiver: "X",
+        acMainParts: "X",
+        acTaptic: "X",
+      },
+      "iPhone 12 Pro": {
+        family: "iPhone 12",
+        whole: "18,300",
+        battery: "2,990",
+        screen: "9,400",
+        backSystem: "15,000",
+        middleSystem: "X",
+        backGlass: "X",
+        backGlassPlusScreen: "X",
+        frame: "X",
+        logicBoard: "X",
+        truedepth: "5,690",
+        rearCamera: "6,390",
+        speaker: "3,400",
+        receiver: "X",
+        mainParts: "X",
+        taptic: "3,290",
+        acWhole: "3,200",
+        acBattery: "0",
+        acScreen: "900",
+        acBackSystem: "X",
+        acMiddleSystem: "X",
+        acBackGlass: "900",
+        acBackGlassPlusScreen: "X",
+        acFrame: "X",
+        acLogicBoard: "X",
+        acTruedepth: "X",
+        acRearCamera: "X",
+        acSpeaker: "X",
+        acReceiver: "X",
+        acMainParts: "X",
+        acTaptic: "X",
+      },
+      "iPhone 12": {
+        family: "iPhone 12",
+        whole: "16,000",
+        battery: "2,990",
+        screen: "9,400",
+        backSystem: "11,500",
+        middleSystem: "X",
+        backGlass: "X",
+        backGlassPlusScreen: "X",
+        frame: "X",
+        logicBoard: "X",
+        truedepth: "5,690",
+        rearCamera: "5,900",
+        speaker: "3,400",
+        receiver: "X",
+        mainParts: "X",
+        taptic: "3,290",
+        acWhole: "3,200",
+        acBattery: "0",
+        acScreen: "900",
+        acBackSystem: "X",
+        acMiddleSystem: "X",
+        acBackGlass: "900",
+        acBackGlassPlusScreen: "X",
+        acFrame: "X",
+        acLogicBoard: "X",
+        acTruedepth: "X",
+        acRearCamera: "X",
+        acSpeaker: "X",
+        acReceiver: "X",
+        acMainParts: "X",
+        acTaptic: "X",
+      },
+      "iPhone 12 Mini": {
+        family: "iPhone 12",
+        whole: "14,400",
+        battery: "2,990",
+        screen: "7,590",
+        backSystem: "9,700",
+        middleSystem: "X",
+        backGlass: "X",
+        backGlassPlusScreen: "X",
+        frame: "X",
+        logicBoard: "X",
+        truedepth: "5,690",
+        rearCamera: "5,900",
+        speaker: "3,400",
+        receiver: "X",
+        mainParts: "X",
+        taptic: "3,290",
+        acWhole: "3,200",
+        acBattery: "0",
+        acScreen: "900",
+        acBackSystem: "X",
+        acMiddleSystem: "X",
+        acBackGlass: "900",
+        acBackGlassPlusScreen: "X",
+        acFrame: "X",
+        acLogicBoard: "X",
+        acTruedepth: "X",
+        acRearCamera: "X",
+        acSpeaker: "X",
+        acReceiver: "X",
+        acMainParts: "X",
+        acTaptic: "X",
+      },
+      "iPhone 11 Pro Max": {
+        family: "iPhone 11",
+        whole: "21,400",
+        battery: "2,990",
+        screen: "11,300",
+        backSystem: "X",
+        middleSystem: "X",
+        backGlass: "X",
+        backGlassPlusScreen: "X",
+        frame: "X",
+        logicBoard: "X",
+        truedepth: "5,690",
+        rearCamera: "4,900",
+        speaker: "3,400",
+        receiver: "X",
+        mainParts: "X",
+        taptic: "3,290",
+        acWhole: "3,200",
+        acBattery: "0",
+        acScreen: "900",
+        acBackSystem: "X",
+        acMiddleSystem: "X",
+        acBackGlass: "900",
+        acBackGlassPlusScreen: "X",
+        acFrame: "X",
+        acLogicBoard: "X",
+        acTruedepth: "X",
+        acRearCamera: "X",
+        acSpeaker: "X",
+        acReceiver: "X",
+        acMainParts: "X",
+        acTaptic: "X",
+      },
+      "iPhone 11 Pro": {
+        family: "iPhone 11",
+        whole: "18,300",
+        battery: "2,990",
+        screen: "9,400",
+        backSystem: "X",
+        middleSystem: "X",
+        backGlass: "X",
+        backGlassPlusScreen: "X",
+        frame: "X",
+        logicBoard: "X",
+        truedepth: "5,690",
+        rearCamera: "4,900",
+        speaker: "3,400",
+        receiver: "X",
+        mainParts: "X",
+        taptic: "3,290",
+        acWhole: "3,200",
+        acBattery: "0",
+        acScreen: "900",
+        acBackSystem: "X",
+        acMiddleSystem: "X",
+        acBackGlass: "900",
+        acBackGlassPlusScreen: "X",
+        acFrame: "X",
+        acLogicBoard: "X",
+        acTruedepth: "X",
+        acRearCamera: "X",
+        acSpeaker: "X",
+        acReceiver: "X",
+        acMainParts: "X",
+        acTaptic: "X",
+      },
+      "iPhone 11": {
+        family: "iPhone 11",
+        whole: "14,400",
+        battery: "2,990",
+        screen: "6,790",
+        backSystem: "X",
+        middleSystem: "X",
+        backGlass: "X",
+        backGlassPlusScreen: "X",
+        frame: "X",
+        logicBoard: "X",
+        truedepth: "5,690",
+        rearCamera: "3,800",
+        speaker: "3,400",
+        receiver: "X",
+        mainParts: "X",
+        taptic: "3,290",
+        acWhole: "3,200",
+        acBattery: "0",
+        acScreen: "900",
+        acBackSystem: "X",
+        acMiddleSystem: "X",
+        acBackGlass: "900",
+        acBackGlassPlusScreen: "X",
+        acFrame: "X",
+        acLogicBoard: "X",
+        acTruedepth: "X",
+        acRearCamera: "X",
+        acSpeaker: "X",
+        acReceiver: "X",
+        acMainParts: "X",
+        acTaptic: "X",
+      },
+      "iPhone XS Max": {
+        family: "iPhone XR",
+        whole: "21,400",
+        battery: "2,990",
+        screen: "11,300",
+        backSystem: "X",
+        middleSystem: "X",
+        backGlass: "X",
+        backGlassPlusScreen: "X",
+        frame: "X",
+        logicBoard: "X",
+        truedepth: "5,690",
+        rearCamera: "3,800",
+        speaker: "3,400",
+        receiver: "X",
+        mainParts: "X",
+        taptic: "3,290",
+        acWhole: "3,200",
+        acBattery: "0",
+        acScreen: "900",
+        acBackSystem: "X",
+        acMiddleSystem: "X",
+        acBackGlass: "900",
+        acBackGlassPlusScreen: "X",
+        acFrame: "X",
+        acLogicBoard: "X",
+        acTruedepth: "X",
+        acRearCamera: "X",
+        acSpeaker: "X",
+        acReceiver: "X",
+        acMainParts: "X",
+        acTaptic: "X",
+      },
+      "iPhone XS": {
+        family: "iPhone XR",
+        whole: "18,300",
+        battery: "2,990",
+        screen: "9,400",
+        backSystem: "X",
+        middleSystem: "X",
+        backGlass: "X",
+        backGlassPlusScreen: "X",
+        frame: "X",
+        logicBoard: "X",
+        truedepth: "5,690",
+        rearCamera: "3,800",
+        speaker: "3,400",
+        receiver: "X",
+        mainParts: "X",
+        taptic: "3,290",
+        acWhole: "3,200",
+        acBattery: "0",
+        acScreen: "900",
+        acBackSystem: "X",
+        acMiddleSystem: "X",
+        acBackGlass: "900",
+        acBackGlassPlusScreen: "X",
+        acFrame: "X",
+        acLogicBoard: "X",
+        acTruedepth: "X",
+        acRearCamera: "X",
+        acSpeaker: "X",
+        acReceiver: "X",
+        acMainParts: "X",
+        acTaptic: "X",
+      },
+      "iPhone X": {
+        family: "iPhone XR",
+        whole: "18,300",
+        battery: "2,990",
+        screen: "9,400",
+        backSystem: "X",
+        middleSystem: "X",
+        backGlass: "X",
+        backGlassPlusScreen: "X",
+        frame: "X",
+        logicBoard: "X",
+        truedepth: "X",
+        rearCamera: "3,800",
+        speaker: "3,400",
+        receiver: "X",
+        mainParts: "X",
+        taptic: "3,290",
+        acWhole: "3,200",
+        acBattery: "0",
+        acScreen: "900",
+        acBackSystem: "X",
+        acMiddleSystem: "X",
+        acBackGlass: "900",
+        acBackGlassPlusScreen: "X",
+        acFrame: "X",
+        acLogicBoard: "X",
+        acTruedepth: "X",
+        acRearCamera: "X",
+        acSpeaker: "X",
+        acReceiver: "X",
+        acMainParts: "X",
+        acTaptic: "X",
+      },
+      "iPhone XR": {
+        family: "iPhone XR",
+        whole: "14,400",
+        battery: "2,990",
+        screen: "6,790",
+        backSystem: "X",
+        middleSystem: "X",
+        backGlass: "X",
+        backGlassPlusScreen: "X",
+        frame: "X",
+        logicBoard: "X",
+        truedepth: "5,690",
+        rearCamera: "3,800",
+        speaker: "3,400",
+        receiver: "X",
+        mainParts: "X",
+        taptic: "3,290",
+        acWhole: "3,200",
+        acBattery: "0",
+        acScreen: "900",
+        acBackSystem: "X",
+        acMiddleSystem: "X",
+        acBackGlass: "900",
+        acBackGlassPlusScreen: "X",
+        acFrame: "X",
+        acLogicBoard: "X",
+        acTruedepth: "X",
+        acRearCamera: "X",
+        acSpeaker: "X",
+        acReceiver: "X",
+        acMainParts: "X",
+        acTaptic: "X",
+      },
+      "iPhone 8 Plus": {
+        family: "iPhone SE",
+        whole: "14,400",
+        battery: "2,290",
+        screen: "6,090",
+        backSystem: "X",
+        middleSystem: "X",
+        backGlass: "X",
+        backGlassPlusScreen: "X",
+        frame: "X",
+        logicBoard: "X",
+        truedepth: "X",
+        rearCamera: "4,200",
+        speaker: "3,400",
+        receiver: "X",
+        mainParts: "X",
+        taptic: "3,290",
+        acWhole: "3,200",
+        acBattery: "0",
+        acScreen: "900",
+        acBackSystem: "X",
+        acMiddleSystem: "X",
+        acBackGlass: "900",
+        acBackGlassPlusScreen: "X",
+        acFrame: "X",
+        acLogicBoard: "X",
+        acTruedepth: "X",
+        acRearCamera: "X",
+        acSpeaker: "X",
+        acReceiver: "X",
+        acMainParts: "X",
+        acTaptic: "X",
+      },
+      "iPhone 8": {
+        family: "iPhone SE",
+        whole: "13,400",
+        battery: "2,290",
+        screen: "5,300",
+        backSystem: "X",
+        middleSystem: "X",
+        backGlass: "X",
+        backGlassPlusScreen: "X",
+        frame: "X",
+        logicBoard: "X",
+        truedepth: "X",
+        rearCamera: "3,390",
+        speaker: "X",
+        receiver: "X",
+        mainParts: "X",
+        taptic: "3,290",
+        acWhole: "3,200",
+        acBattery: "0",
+        acScreen: "900",
+        acBackSystem: "X",
+        acMiddleSystem: "X",
+        acBackGlass: "900",
+        acBackGlassPlusScreen: "X",
+        acFrame: "X",
+        acLogicBoard: "X",
+        acTruedepth: "X",
+        acRearCamera: "X",
+        acSpeaker: "X",
+        acReceiver: "X",
+        acMainParts: "X",
+        acTaptic: "X",
+      },
+      "iPhone 7 Plus": {
+        family: "iPhone SE",
+        whole: "13,400",
+        battery: "2,290",
+        screen: "6,090",
+        backSystem: "X",
+        middleSystem: "X",
+        backGlass: "X",
+        backGlassPlusScreen: "X",
+        frame: "X",
+        logicBoard: "X",
+        truedepth: "X",
+        rearCamera: "4,200",
+        speaker: "3,400",
+        receiver: "X",
+        mainParts: "X",
+        taptic: "4,100",
+        acWhole: "3,200",
+        acBattery: "0",
+        acScreen: "900",
+        acBackSystem: "X",
+        acMiddleSystem: "X",
+        acBackGlass: "900",
+        acBackGlassPlusScreen: "X",
+        acFrame: "X",
+        acLogicBoard: "X",
+        acTruedepth: "X",
+        acRearCamera: "X",
+        acSpeaker: "X",
+        acReceiver: "X",
+        acMainParts: "X",
+        acTaptic: "X",
+      },
+      "iPhone 7": {
+        family: "iPhone SE",
+        whole: "10,600",
+        battery: "2,290",
+        screen: "5,300",
+        backSystem: "X",
+        middleSystem: "X",
+        backGlass: "X",
+        backGlassPlusScreen: "X",
+        frame: "X",
+        logicBoard: "X",
+        truedepth: "X",
+        rearCamera: "3,390",
+        speaker: "3,400",
+        receiver: "X",
+        mainParts: "X",
+        taptic: "4,100",
+        acWhole: "3,200",
+        acBattery: "0",
+        acScreen: "900",
+        acBackSystem: "X",
+        acMiddleSystem: "X",
+        acBackGlass: "900",
+        acBackGlassPlusScreen: "X",
+        acFrame: "X",
+        acLogicBoard: "X",
+        acTruedepth: "X",
+        acRearCamera: "X",
+        acSpeaker: "X",
+        acReceiver: "X",
+        acMainParts: "X",
+        acTaptic: "X",
+      },
+      "iPhone SE 2nd": {
+        family: "iPhone SE",
+        whole: "10,600",
+        battery: "2,290",
+        screen: "4,700",
+        backSystem: "X",
+        middleSystem: "X",
+        backGlass: "X",
+        backGlassPlusScreen: "X",
+        frame: "X",
+        logicBoard: "X",
+        truedepth: "X",
+        rearCamera: "3,390",
+        speaker: "X",
+        receiver: "X",
+        mainParts: "X",
+        taptic: "3,290",
+        acWhole: "3,200",
+        acBattery: "0",
+        acScreen: "900",
+        acBackSystem: "X",
+        acMiddleSystem: "X",
+        acBackGlass: "900",
+        acBackGlassPlusScreen: "X",
+        acFrame: "X",
+        acLogicBoard: "X",
+        acTruedepth: "X",
+        acRearCamera: "X",
+        acSpeaker: "X",
+        acReceiver: "X",
+        acMainParts: "X",
+        acTaptic: "X",
+      },
+      "iPhone SE 3rd": {
+        family: "iPhone SE",
+        whole: "10,500",
+        battery: "2,290",
+        screen: "4,700",
+        backSystem: "X",
+        middleSystem: "X",
+        backGlass: "X",
+        backGlassPlusScreen: "X",
+        frame: "X",
+        logicBoard: "X",
+        truedepth: "X",
+        rearCamera: "3,390",
+        speaker: "X",
+        receiver: "X",
+        mainParts: "X",
+        taptic: "3,290",
+        acWhole: "3,200",
+        acBattery: "0",
+        acScreen: "900",
+        acBackSystem: "X",
+        acMiddleSystem: "X",
+        acBackGlass: "900",
+        acBackGlassPlusScreen: "X",
+        acFrame: "X",
+        acLogicBoard: "X",
+        acTruedepth: "X",
+        acRearCamera: "X",
+        acSpeaker: "X",
+        acReceiver: "X",
+        acMainParts: "X",
+        acTaptic: "X",
+      },
+      "Apple Watch Hermès Ultra 3": {
+        family: "Apple Watch Ultra",
+        battery: "3,490",
+        other: "17,300",
+      },
+      "Apple Watch Ultra 3": {
+        family: "Apple Watch Ultra",
+        battery: "3,490",
+        other: "17,300",
+      },
+      "Apple Watch Hermès Ultra 2": {
+        family: "Apple Watch Ultra",
+        battery: "3,490",
+        other: "17,300",
+      },
+      "Apple Watch Ultra 2": {
+        family: "Apple Watch Ultra",
+        battery: "3,490",
+        other: "17,300",
+      },
+      "Apple Watch Ultra": {
+        family: "Apple Watch Ultra",
+        battery: "3,490",
+        other: "17,300",
+      },
+      "Apple Watch Hermès Series 11 GPS + 行動網路 42 公釐": {
+        family: "Apple Watch Series 11",
+        battery: "3,490",
+        other: "16,490",
+      },
+      "Apple Watch Hermès Series 11 GPS + 行動網路 46 公釐": {
+        family: "Apple Watch Series 11",
+        battery: "3,490",
+        other: "16,490",
+      },
+      "Apple Watch Series 11 GPS + 行動網路 鈦金屬 42 公釐": {
+        family: "Apple Watch Series 11",
+        battery: "3,490",
+        other: "16,490",
+      },
+      "Apple Watch Series 11 GPS + 行動網路 鈦金屬 46 公釐": {
+        family: "Apple Watch Series 11",
+        battery: "3,490",
+        other: "16,490",
+      },
+      "Apple Watch Series 11 GPS + 行動網路 鋁金屬 42 公釐": {
+        family: "Apple Watch Series 11",
+        battery: "3,490",
+        other: "12,100",
+      },
+      "Apple Watch Series 11 GPS + 行動網路 鋁金屬 46 公釐": {
+        family: "Apple Watch Series 11",
+        battery: "3,490",
+        other: "12,100",
+      },
+      "Apple Watch Series 11 GPS 鋁金屬 42 公釐": {
+        family: "Apple Watch Series 11",
+        battery: "3,490",
+        other: "10,300",
+      },
+      "Apple Watch Series 11 GPS 鋁金屬 46 公釐": {
+        family: "Apple Watch Series 11",
+        battery: "3,490",
+        other: "10,300",
+      },
+      "Apple Watch Hermès Series 10 GPS + 行動網路 42 公釐": {
+        family: "Apple Watch Series 10",
+        battery: "3,490",
+        other: "16,490",
+      },
+      "Apple Watch Hermès Series 10 GPS + 行動網路 46 公釐": {
+        family: "Apple Watch Series 10",
+        battery: "3,490",
+        other: "16,490",
+      },
+      "Apple Watch Series 10 GPS + 行動網路 鈦金屬 42 公釐": {
+        family: "Apple Watch Series 10",
+        battery: "3,490",
+        other: "16,490",
+      },
+      "Apple Watch Series 10 GPS + 行動網路 鈦金屬 46 公釐": {
+        family: "Apple Watch Series 10",
+        battery: "3,490",
+        other: "16,490",
+      },
+      "Apple Watch Series 10 GPS + 行動網路 鋁金屬 42 公釐": {
+        family: "Apple Watch Series 10",
+        battery: "3,490",
+        other: "12,100",
+      },
+      "Apple Watch Series 10 GPS + 行動網路 鋁金屬 46 公釐": {
+        family: "Apple Watch Series 10",
+        battery: "3,490",
+        other: "12,100",
+      },
+      "Apple Watch Series 10 GPS 鋁金屬 42 公釐": {
+        family: "Apple Watch Series 10",
+        battery: "3,490",
+        other: "10,300",
+      },
+      "Apple Watch Series 10 GPS 鋁金屬 46 公釐": {
+        family: "Apple Watch Series 10",
+        battery: "3,490",
+        other: "10,300",
+      },
+      "Apple Watch Hermès Series 9 GPS + 行動網路 41 公釐": {
+        family: "Apple Watch Series 9",
+        battery: "3,490",
+        other: "16,490",
+      },
+      "Apple Watch Hermès Series 9 GPS + 行動網路 45 公釐": {
+        family: "Apple Watch Series 9",
+        battery: "3,490",
+        other: "16,490",
+      },
+      "Apple Watch Series 9 GPS + 行動網路 不鏽鋼 41 公釐": {
+        family: "Apple Watch Series 9",
+        battery: "3,490",
+        other: "14,000",
+      },
+      "Apple Watch Series 9 GPS + 行動網路 不鏽鋼 45 公釐": {
+        family: "Apple Watch Series 9",
+        battery: "3,490",
+        other: "14,000",
+      },
+      "Apple Watch Series 9 GPS + 行動網路 鋁金屬 41 公釐": {
+        family: "Apple Watch Series 9",
+        battery: "3,490",
+        other: "12,100",
+      },
+      "Apple Watch Series 9 GPS + 行動網路 鋁金屬 45 公釐": {
+        family: "Apple Watch Series 9",
+        battery: "3,490",
+        other: "12,100",
+      },
+      "Apple Watch Series 9 GPS 鋁金屬 41 公釐": {
+        family: "Apple Watch Series 9",
+        battery: "3,490",
+        other: "10,300",
+      },
+      "Apple Watch Series 9 GPS 鋁金屬 45 公釐": {
+        family: "Apple Watch Series 9",
+        battery: "3,490",
+        other: "10,300",
+      },
+      "Apple Watch Hermès Series 8 (GPS + 行動網路) 41 公釐": {
+        family: "Apple Watch Series 8",
+        battery: "3,490",
+        other: "16,490",
+      },
+      "Apple Watch Hermès Series 8 (GPS + 行動網路) 45 公釐": {
+        family: "Apple Watch Series 8",
+        battery: "3,490",
+        other: "16,490",
+      },
+      "Apple Watch Series 8 (GPS + 行動網路)（不鏽鋼）41 公釐": {
+        family: "Apple Watch Series 8",
+        battery: "3,490",
+        other: "14,000",
+      },
+      "Apple Watch Series 8 (GPS + 行動網路)（不鏽鋼）45 公釐": {
+        family: "Apple Watch Series 8",
+        battery: "3,490",
+        other: "14,000",
+      },
+      "Apple Watch Series 8 (GPS + 行動網路)（鋁金屬）41 公釐": {
+        family: "Apple Watch Series 8",
+        battery: "3,490",
+        other: "12,100",
+      },
+      "Apple Watch Series 8 (GPS + 行動網路)（鋁金屬）45 公釐": {
+        family: "Apple Watch Series 8",
+        battery: "3,490",
+        other: "12,100",
+      },
+      "Apple Watch Series 8 (GPS)（鋁金屬）41 公釐": {
+        family: "Apple Watch Series 8",
+        battery: "3,490",
+        other: "10,300",
+      },
+      "Apple Watch Series 8 (GPS)（鋁金屬）45 公釐": {
+        family: "Apple Watch Series 8",
+        battery: "3,490",
+        other: "10,300",
+      },
+      "Apple Watch Edition Series 7 (GPS + 行動網路)（鈦金屬）41 公釐": {
+        family: "Apple Watch Series 7",
+        battery: "3,490",
+        other: "16,490",
+      },
+      "Apple Watch Edition Series 7 (GPS + 行動網路)（鈦金屬）45 公釐": {
+        family: "Apple Watch Series 7",
+        battery: "3,490",
+        other: "16,490",
+      },
+      "Apple Watch Hermes Series 7 (GPS + 行動網路) 41 公釐": {
+        family: "Apple Watch Series 7",
+        battery: "3,490",
+        other: "16,490",
+      },
+      "Apple Watch Hermes Series 7 (GPS + 行動網路) 45 公釐": {
+        family: "Apple Watch Series 7",
+        battery: "3,490",
+        other: "16,490",
+      },
+      "Apple Watch Nike Series 7 (GPS + 行動網路) 41 公釐": {
+        family: "Apple Watch Series 7",
+        battery: "3,490",
+        other: "12,100",
+      },
+      "Apple Watch Nike Series 7 (GPS + 行動網路) 45 公釐": {
+        family: "Apple Watch Series 7",
+        battery: "3,490",
+        other: "12,100",
+      },
+      "Apple Watch Nike Series 7 (GPS) 41 公釐": {
+        family: "Apple Watch Series 7",
+        battery: "3,490",
+        other: "10,300",
+      },
+      "Apple Watch Nike Series 7 (GPS) 45 公釐": {
+        family: "Apple Watch Series 7",
+        battery: "3,490",
+        other: "10,300",
+      },
+      "Apple Watch Series 7 (GPS + 行動網路)（鋁金屬）41 公釐": {
+        family: "Apple Watch Series 7",
+        battery: "3,490",
+        other: "12,100",
+      },
+      "Apple Watch Series 7 (GPS + 行動網路)（鋁金屬）45 公釐": {
+        family: "Apple Watch Series 7",
+        battery: "3,490",
+        other: "12,100",
+      },
+      "Apple Watch Series 7 (GPS + 行動網路)（不鏽鋼）41 公釐": {
+        family: "Apple Watch Series 7",
+        battery: "3,490",
+        other: "14,000",
+      },
+      "Apple Watch Series 7 (GPS + 行動網路)（不鏽鋼）45 公釐": {
+        family: "Apple Watch Series 7",
+        battery: "3,490",
+        other: "14,000",
+      },
+      "Apple Watch Series 7 (GPS)（鋁金屬）41 公釐": {
+        family: "Apple Watch Series 7",
+        battery: "3,490",
+        other: "10,300",
+      },
+      "Apple Watch Series 7 (GPS)（鋁金屬）45 公釐": {
+        family: "Apple Watch Series 7",
+        battery: "3,490",
+        other: "10,300",
+      },
+      "Apple Watch Series 6 (GPS + 行動網路)（鋁金屬）40 公釐": {
+        family: "Apple Watch Series 6",
+        battery: "3,490",
+        other: "12,100",
+      },
+      "Apple Watch Series 6 (GPS + 行動網路)（鋁金屬）44 公釐": {
+        family: "Apple Watch Series 6",
+        battery: "3,490",
+        other: "12,100",
+      },
+      "Apple Watch Series 6 (GPS + 行動網路)（不鏽鋼）40 公釐": {
+        family: "Apple Watch Series 6",
+        battery: "3,490",
+        other: "14,000",
+      },
+      "Apple Watch Series 6 (GPS + 行動網路)（不鏽鋼）44 公釐": {
+        family: "Apple Watch Series 6",
+        battery: "3,490",
+        other: "14,000",
+      },
+      "Apple Watch Series 6 (GPS)（鋁金屬）40 公釐": {
+        family: "Apple Watch Series 6",
+        battery: "3,490",
+        other: "10,300",
+      },
+      "Apple Watch Series 6 (GPS)（鋁金屬）44 公釐": {
+        family: "Apple Watch Series 6",
+        battery: "3,490",
+        other: "10,300",
+      },
+      "Apple Watch Edition Series 6 (GPS + 行動網路)（鈦金屬）40 公釐": {
+        family: "Apple Watch Series 6",
+        battery: "3,490",
+        other: "16,490",
+      },
+      "Apple Watch Edition Series 6 (GPS + 行動網路)（鈦金屬）44 公釐": {
+        family: "Apple Watch Series 6",
+        battery: "3,490",
+        other: "16,490",
+      },
+      "Apple Watch Hermes Series 6 (GPS + 行動網路) 40 公釐": {
+        family: "Apple Watch Series 6",
+        battery: "3,490",
+        other: "16,490",
+      },
+      "Apple Watch Hermes Series 6 (GPS + 行動網路) 44 公釐": {
+        family: "Apple Watch Series 6",
+        battery: "3,490",
+        other: "16,490",
+      },
+      "Apple Watch Nike Series 6 (GPS + 行動網路) 40 公釐": {
+        family: "Apple Watch Series 6",
+        battery: "3,490",
+        other: "12,100",
+      },
+      "Apple Watch Nike Series 6 (GPS + 行動網路) 44 公釐": {
+        family: "Apple Watch Series 6",
+        battery: "3,490",
+        other: "12,100",
+      },
+      "Apple Watch Nike Series 6 (GPS) 40 公釐": {
+        family: "Apple Watch Series 6",
+        battery: "3,490",
+        other: "10,300",
+      },
+      "Apple Watch Nike Series 6 (GPS) 44 公釐": {
+        family: "Apple Watch Series 6",
+        battery: "3,490",
+        other: "10,300",
+      },
+      "Apple Watch SE 3 GPS + 行動網路 鋁金屬 40 公釐": {
+        family: "Apple Watch SE",
+        battery: "3,490",
+        other: "7,500",
+      },
+      "Apple Watch SE 3 GPS + 行動網路 鋁金屬 44 公釐": {
+        family: "Apple Watch SE",
+        battery: "3,490",
+        other: "7,500",
+      },
+      "Apple Watch SE 3 GPS 40 公釐": {
+        family: "Apple Watch SE",
+        battery: "3,490",
+        other: "6,700",
+      },
+      "Apple Watch SE 3 GPS 44 公釐": {
+        family: "Apple Watch SE",
+        battery: "3,490",
+        other: "6,700",
+      },
+      "Apple Watch SE (第 2 代,GPS + 行動網路,40 公釐)": {
+        family: "Apple Watch SE",
+        battery: "3,490",
+        other: "7,500",
+      },
+      "Apple Watch SE (第 2 代,GPS + 行動網路,44 公釐)": {
+        family: "Apple Watch SE",
+        battery: "3,490",
+        other: "7,500",
+      },
+      "Apple Watch SE (第 2 代,GPS,40 公釐)": {
+        family: "Apple Watch SE",
+        battery: "3,490",
+        other: "6,700",
+      },
+      "Apple Watch SE (第 2 代,GPS,44 公釐)": {
+        family: "Apple Watch SE",
+        battery: "3,490",
+        other: "6,700",
+      },
+      "Apple Watch Nike SE (GPS + 行動網路) 40 公釐": {
+        family: "Apple Watch SE",
+        battery: "3,490",
+        other: "9,290",
+      },
+      "Apple Watch Nike SE (GPS + 行動網路) 44 公釐": {
+        family: "Apple Watch SE",
+        battery: "3,490",
+        other: "9,290",
+      },
+      "Apple Watch Nike SE (GPS) 40 公釐": {
+        family: "Apple Watch SE",
+        battery: "3,490",
+        other: "8,290",
+      },
+      "Apple Watch Nike SE (GPS) 44 公釐": {
+        family: "Apple Watch SE",
+        battery: "3,490",
+        other: "8,290",
+      },
+      "Apple Watch SE (GPS + 行動網路)（鋁金屬）40 公釐": {
+        family: "Apple Watch SE",
+        battery: "3,490",
+        other: "9,290",
+      },
+      "Apple Watch SE (GPS + 行動網路)（鋁金屬）44 公釐": {
+        family: "Apple Watch SE",
+        battery: "3,490",
+        other: "9,290",
+      },
+      "Apple Watch SE (GPS)（鋁金屬）40 公釐": {
+        family: "Apple Watch SE",
+        battery: "3,490",
+        other: "8,290",
+      },
+      "Apple Watch SE (GPS)（鋁金屬）44 公釐": {
+        family: "Apple Watch SE",
+        battery: "3,490",
+        other: "8,290",
+      },
+      "AirPods Max 2": {
+        family: "AirPods",
+        battery: "2,990",
+        other: "17,000",
+      },
+      "AirPods Max 1": {
+        family: "AirPods",
+        battery: "2,990",
+        other: "17,000",
+      },
+      "AirPods Pro 3": {
+        family: "AirPods",
+        battery: "1,990",
+        podDamage: "2,990",
+        caseDamage: "2,990",
+        podLoss: "2,990",
+        caseLoss: "3,290",
+      },
+      "AirPods Pro 2 (USB-C)": {
+        family: "AirPods",
+        battery: "1,990",
+        podDamage: "2,990",
+        caseDamage: "2,990",
+        podLoss: "2,990",
+        caseLoss: "3,290",
+      },
+      "AirPods Pro 2 (Lightning)": {
+        family: "AirPods",
+        battery: "1,990",
+        podDamage: "2,990",
+        caseDamage: "2,990",
+        podLoss: "2,990",
+        caseLoss: "3,290",
+      },
+      "AirPods Pro 1 (MagSafe)": {
+        family: "AirPods",
+        battery: "1,990",
+        podDamage: "2,990",
+        caseDamage: "2,990",
+        podLoss: "2,990",
+        caseLoss: "3,290",
+      },
+      "AirPods Pro 1 (無線充電盒)": {
+        family: "AirPods",
+        battery: "1,990",
+        podDamage: "2,990",
+        caseDamage: "2,990",
+        podLoss: "2,990",
+        caseLoss: "3,290",
+      },
+      "AirPods 4 (ANC)": {
+        family: "AirPods",
+        battery: "1,990",
+        podDamage: "2,490",
+        caseDamage: "2,490",
+        podLoss: "2,490",
+        caseLoss: "2,990",
+      },
+      "AirPods 4": {
+        family: "AirPods",
+        battery: "1,990",
+        podDamage: "2,490",
+        caseDamage: "2,090",
+        podLoss: "2,490",
+        caseLoss: "2,490",
+      },
+      "AirPods 3 (MagSafe)": {
+        family: "AirPods",
+        battery: "1,990",
+        podDamage: "2,490",
+        caseDamage: "2,490",
+        podLoss: "2,490",
+        caseLoss: "2,990",
+      },
+      "AirPods 3 (Lightning)": {
+        family: "AirPods",
+        battery: "1,990",
+        podDamage: "2,490",
+        caseDamage: "2,090",
+        podLoss: "2,490",
+        caseLoss: "2,490",
+      },
+      "AirPods 2 (無線充電盒)": {
+        family: "AirPods",
+        battery: "1,990",
+        podDamage: "2,490",
+        caseDamage: "2,490",
+        podLoss: "2,490",
+        caseLoss: "2,990",
+      },
+      "AirPods 2 (Lightning)": {
+        family: "AirPods",
+        battery: "1,990",
+        podDamage: "2,490",
+        caseDamage: "2,090",
+        podLoss: "2,490",
+        caseLoss: "2,090",
+      },
+      "iPad Pro 13 吋 (M5) Wi-Fi": {
+        family: "iPad Pro",
+        battery: "7,500",
+        other: "42,300",
+      },
+      "iPad Pro 13 吋 (M5) Wi-Fi + 行動網路": {
+        family: "iPad Pro",
+        battery: "7,500",
+        other: "44,490",
+      },
+      "iPad Pro 11 吋 (M5) Wi-Fi": {
+        family: "iPad Pro",
+        battery: "6,590",
+        other: "36,890",
+      },
+      "iPad Pro 11 吋 (M5) Wi-Fi + 行動網路": {
+        family: "iPad Pro",
+        battery: "6,590",
+        other: "39,000",
+      },
+      "iPad Pro (13 吋、M4、Wi-Fi)": {
+        family: "iPad Pro",
+        battery: "7,500",
+        other: "40,590",
+      },
+      "iPad Pro (13 吋、M4、Wi-Fi + 行動網路)": {
+        family: "iPad Pro",
+        battery: "7,500",
+        other: "42,700",
+      },
+      "iPad Pro (11 吋、M4、Wi-Fi)": {
+        family: "iPad Pro",
+        battery: "6,590",
+        other: "35,100",
+      },
+      "iPad Pro (11 吋、M4、Wi-Fi + 行動網路)": {
+        family: "iPad Pro",
+        battery: "6,590",
+        other: "37,490",
+      },
+      "iPad Pro (12.9 英寸、第 6 代) Wi-Fi": {
+        family: "iPad Pro",
+        battery: "6,590",
+        other: "30,000",
+      },
+      "iPad Pro (12.9 英寸、第 6 代) Wi-Fi + 行動網路": {
+        family: "iPad Pro",
+        battery: "6,590",
+        other: "31,600",
+      },
+      "iPad Pro (12.9 英寸、第 5 代) Wi-Fi": {
+        family: "iPad Pro",
+        battery: "4,400",
+        other: "30,000",
+      },
+      "iPad Pro (12.9 英寸、第 5 代) Wi-Fi + 行動網路": {
+        family: "iPad Pro",
+        battery: "4,400",
+        other: "31,600",
+      },
+      "iPad Pro (12.9 英寸、第 4 代)": {
+        family: "iPad Pro",
+        battery: "4,400",
+        other: "23,900",
+      },
+      "iPad Pro (11 英寸、第 4 代) Wi-Fi": {
+        family: "iPad Pro",
+        battery: "5,500",
+        other: "22,900",
+      },
+      "iPad Pro (11 英寸、第 4 代) Wi-Fi + 行動網路": {
+        family: "iPad Pro",
+        battery: "5,500",
+        other: "25,100",
+      },
+      "iPad Pro (11 英寸、第 3 代) Wi-Fi": {
+        family: "iPad Pro",
+        battery: "4,400",
+        other: "22,900",
+      },
+      "iPad Pro (11 英寸、第 3 代) Wi-Fi + 行動網路": {
+        family: "iPad Pro",
+        battery: "4,400",
+        other: "25,100",
+      },
+      "iPad Pro (11 英寸、第 2 代)": {
+        family: "iPad Pro",
+        battery: "4,400",
+        other: "18,690",
+      },
+      "iPad Pro 11 英寸": {
+        family: "iPad Pro",
+        battery: "4,400",
+        other: "18,690",
+      },
+      "iPad mini (A17 Pro) Wi-Fi": {
+        family: "iPad mini",
+        battery: "4,400",
+        other: "16,390",
+      },
+      "iPad mini (A17 Pro) Wi-Fi + 行動網路": {
+        family: "iPad mini",
+        battery: "4,400",
+        other: "18,000",
+      },
+      "iPad mini (第 6 代) Wi-Fi": {
+        family: "iPad mini",
+        battery: "4,400",
+        other: "15,590",
+      },
+      "iPad mini (第 6 代) Wi-Fi + 行動網路": {
+        family: "iPad mini",
+        battery: "4,400",
+        other: "17,390",
+      },
+      "iPad mini (第 5 代)": {
+        family: "iPad mini",
+        battery: "4,400",
+        other: "11,400",
+      },
+      "iPad Air 13 吋 (M4) Wi-Fi": {
+        family: "iPad Air",
+        battery: "5,500",
+        other: "26,400",
+      },
+      "iPad Air 13 吋 (M4) Wi-Fi + 行動網路": {
+        family: "iPad Air",
+        battery: "5,500",
+        other: "28,100",
+      },
+      "iPad Air 11 吋 (M4) Wi-Fi": {
+        family: "iPad Air",
+        battery: "4,700",
+        other: "20,300",
+      },
+      "iPad Air 11 吋 (M4) Wi-Fi + 行動網路": {
+        family: "iPad Air",
+        battery: "4,700",
+        other: "22,790",
+      },
+      "iPad Air (13 吋、M3、Wi-Fi)": {
+        family: "iPad Air",
+        battery: "5,500",
+        other: "25,690",
+      },
+      "iPad Air (13 吋、M3、Wi-Fi + 行動網路)": {
+        family: "iPad Air",
+        battery: "5,500",
+        other: "27,300",
+      },
+      "iPad Air (11 吋、M3、Wi-Fi)": {
+        family: "iPad Air",
+        battery: "4,400",
+        other: "19,590",
+      },
+      "iPad Air (11 吋、M3、Wi-Fi + 行動網路)": {
+        family: "iPad Air",
+        battery: "4,400",
+        other: "22,000",
+      },
+      "iPad Air (13 吋、M2、Wi-Fi)": {
+        family: "iPad Air",
+        battery: "5,500",
+        other: "25,690",
+      },
+      "iPad Air (13 吋、M2、Wi-Fi + 行動網路)": {
+        family: "iPad Air",
+        battery: "5,500",
+        other: "27,300",
+      },
+      "iPad Air (11 吋、M2、Wi-Fi)": {
+        family: "iPad Air",
+        battery: "4,400",
+        other: "19,590",
+      },
+      "iPad Air (11 吋、M2、Wi-Fi + 行動網路)": {
+        family: "iPad Air",
+        battery: "4,400",
+        other: "22,000",
+      },
+      "iPad Air (第 5 代) Wi-Fi": {
+        family: "iPad Air",
+        battery: "4,400",
+        other: "18,400",
+      },
+      "iPad Air (第 5 代) Wi-Fi + 行動網路": {
+        family: "iPad Air",
+        battery: "4,400",
+        other: "19,790",
+      },
+      "iPad Air (第 4 代)": {
+        family: "iPad Air",
+        battery: "4,400",
+        other: "15,590",
+      },
+      "iPad (A16、Wi-Fi)": {
+        family: "iPad",
+        battery: "4,400",
+        other: "14,590",
+      },
+      "iPad (A16、Wi-Fi + 行動網路)": {
+        family: "iPad",
+        battery: "4,400",
+        other: "16,490",
+      },
+      "iPad (第 10 代) Wi-Fi": {
+        family: "iPad",
+        battery: "4,400",
+        other: "13,790",
+      },
+      "iPad (第 10 代) Wi-Fi + 行動網路": {
+        family: "iPad",
+        battery: "4,400",
+        other: "15,700",
+      },
+      "iPad (第 9 代)": {
+        family: "iPad",
+        battery: "3,490",
+        other: "11,500",
+      },
+      "iPad (第 8 代)": {
+        family: "iPad",
+        battery: "3,490",
+        other: "9,290",
+      },
+      "iPad (第 7 代)": {
+        family: "iPad",
+        battery: "3,490",
+        other: "9,290",
+      },
+      "Apple Pencil (USB-C)": {
+        family: "iPad 配件",
+        battery: "1,400",
+        other: "2,400",
+      },
+      "Apple Pencil Pro": {
+        family: "iPad 配件",
+        battery: "1,400",
+        other: "3,700",
+      },
+      "Apple Pencil (第 2 代)": {
+        family: "iPad 配件",
+        battery: "1,400",
+        other: "3,700",
+      },
+      "Apple Pencil": {
+        family: "iPad 配件",
+        battery: "1,400",
+        other: "2,890",
+      },
+    };
+    const iphoneFamilies = [
+      "iPhone Air",
+      "iPhone 17",
+      "iPhone 16",
+      "iPhone 15",
+      "iPhone 14",
+      "iPhone 13",
+      "iPhone 12",
+      "iPhone 11",
+      "iPhone XR",
+      "iPhone SE",
+    ];
+
+    const ipadFamilies = [
+      "iPad Pro",
+      "iPad mini",
+      "iPad Air",
+      "iPad",
+      "iPad 配件",
+    ];
+
+    const familyLabels = {
+      "iPhone XR": "iPhone X 系列",
+      "iPhone SE": "iPhone 7/8/SE",
+    };
+
+    const appleWatchFamilies = [
+      "Apple Watch Ultra",
+      "Apple Watch Series 11",
+      "Apple Watch Series 10",
+      "Apple Watch Series 9",
+      "Apple Watch Series 8",
+      "Apple Watch Series 7",
+      "Apple Watch Series 6",
+      "Apple Watch SE",
+    ];
+
+    const airPodsFamilies = [
+      "AirPods Max 2",
+      "AirPods Max 1",
+      "AirPods Pro 3",
+      "AirPods Pro 2 (USB-C)",
+      "AirPods Pro 2 (Lightning)",
+      "AirPods Pro 1 (MagSafe)",
+      "AirPods Pro 1 (無線充電盒)",
+      "AirPods 4 (ANC)",
+      "AirPods 4",
+      "AirPods 3 (MagSafe)",
+      "AirPods 3 (Lightning)",
+      "AirPods 2 (無線充電盒)",
+      "AirPods 2 (Lightning)",
+    ];
+
+    const otherServiceData = {
+      "Apple Pencil Cap": [
+        { label: "1 個", value: "490" },
+      ],
+      "Apple TV 4K（第 2 代）": [
+        { label: "交換價格", value: "5,290" },
+      ],
+      "Apple TV 4K（第 3 代）Ethernet": [
+        { label: "交換價格", value: "6,900" },
+      ],
+      "Apple TV 4K（第 3 代）Wi-Fi": [
+        { label: "交換價格", value: "5,990" },
+      ],
+      "Siri Remote": [
+        { label: "交換價格", value: "1,500" },
+        { label: "電池價格", value: "1,190" },
+      ],
+      "HomePod（第 2 代）": [
+        { label: "交換價格", value: "8,990" },
+      ],
+      "HomePod mini": [
+        { label: "交換價格", value: "3,200" },
+      ],
+      "AirPods 耳塞": [
+        { label: "1 組（2 顆）", value: "200" },
+      ],
+      "Beats EP": [
+        { label: "頭戴式耳機交換價格", value: "2,190" },
+        { label: "電池交換價格", value: "2,390" },
+      ],
+      "Beats Pro": [
+        { label: "頭戴式耳機交換價格", value: "7,290" },
+      ],
+      "Beats Solo Pro": [
+        { label: "頭戴式耳機交換價格", value: "6,190" },
+        { label: "電池交換價格", value: "3,290" },
+      ],
+      "Beats Solo2": [
+        { label: "頭戴式耳機交換價格", value: "3,590" },
+        { label: "電池交換價格", value: "3,290" },
+      ],
+      "Beats Solo2 Wireless": [
+        { label: "頭戴式耳機交換價格", value: "4,700" },
+        { label: "電池交換價格", value: "3,290" },
+      ],
+      "Beats Solo3 Wireless": [
+        { label: "頭戴式耳機交換價格", value: "4,700" },
+        { label: "電池交換價格", value: "3,290" },
+      ],
+      "Beats Studio 2": [
+        { label: "頭戴式耳機交換價格", value: "5,490" },
+        { label: "電池交換價格", value: "3,290" },
+      ],
+      "Beats Studio 2 Wireless": [
+        { label: "頭戴式耳機交換價格", value: "7,290" },
+        { label: "電池交換價格", value: "3,290" },
+      ],
+      "Beats Studio 3 Wireless": [
+        { label: "頭戴式耳機交換價格", value: "7,290" },
+        { label: "電池交換價格", value: "3,290" },
+      ],
+      "BeatsX": [
+        { label: "入耳式耳機交換價格", value: "2,900" },
+      ],
+      "Beats Flex": [
+        { label: "入耳式耳機交換價格", value: "X" },
+      ],
+      "Powerbeats": [
+        { label: "入耳式耳機交換價格", value: "3,590" },
+      ],
+      "Powerbeats Pro": [
+        { label: "入耳式耳機交換價格", value: "3,590" },
+        { label: "遺失／缺少耳塞", value: "490" },
+        { label: "遺失／缺少充電盒", value: "3,590" },
+      ],
+      "Powerbeats2 Wireless": [
+        { label: "入耳式耳機交換價格", value: "3,590" },
+      ],
+      "Powerbeats3 Wireless": [
+        { label: "入耳式耳機交換價格", value: "3,590" },
+      ],
+      "Tour2": [
+        { label: "入耳式耳機交換價格", value: "2,100" },
+      ],
+      "urBeats2": [
+        { label: "入耳式耳機交換價格", value: "1,790" },
+      ],
+      "urBeats3": [
+        { label: "入耳式耳機交換價格", value: "1,790" },
+      ],
+      "Beats Studio Buds": [
+        { label: "單耳交換價格", value: "2,790" },
+      ],
+      "Beats Fit Pro": [
+        { label: "單耳交換價格", value: "3,390" },
+      ],
+    };
+
+    const otherServiceGroups = {
+      "其他": [
+        "Apple Pencil Cap",
+        "Apple TV 4K（第 2 代）",
+        "Apple TV 4K（第 3 代）Ethernet",
+        "Apple TV 4K（第 3 代）Wi-Fi",
+        "Siri Remote",
+        "HomePod（第 2 代）",
+        "HomePod mini",
+        "AirPods 耳塞",
+      ],
+      "AirPods Max 重新報價 與 Beats系列": [
+        "AirPods Max 重新報價",
+      ],
+      "報價單": [],
+    };
+
+    const tierCalculatorTypes = [
+      "Mac收費級距",
+      "iPad SUR收費級距",
+    ];
+
+    const tierCalculatorRules = {
+      "iPad SUR收費級距": {
+        inputLabel: "RC 報價價格",
+        note: "僅適用 Mail in 後，RC 對單獨零件重新報價。",
+        tiers: [
+          { min: 0, max: 999, label: "低於 1,000", fixed: 1500, employee: "90 折" },
+          { min: 1000, max: 1999, label: "1,000 ~ 1,999", multiplier: 1.45, employee: "90 折" },
+          { min: 2000, max: 9999, label: "2,000 ~ 9,999", multiplier: 1.20, employee: "90 折" },
+          { min: 10000, max: Infinity, label: "10,000 以上", multiplier: 1.15, employee: "95 折" },
+        ],
+      },
+      "Mac收費級距": {
+        inputLabel: "GSX 價格",
+        note: "依 Mac 維修計算公式，自動判斷 GSX 成本級距。",
+        tiers: [
+          { min: 0, max: 999, label: "低於 1,000", fixed: 1500, employee: "9 折" },
+          { min: 1000, max: 4999, label: "1,000 ~ 4,999", multiplier: 1.45, employee: "9 折" },
+          { min: 5000, max: 9999, label: "5,000 ~ 9,999", multiplier: 1.40, employee: "9 折" },
+          { min: 10000, max: 14999, label: "10,000 ~ 14,999", multiplier: 1.30, employee: "9 折" },
+          { min: 15000, max: 19999, label: "15,000 ~ 19,999", multiplier: 1.20, employee: "95 折" },
+          { min: 20000, max: Infinity, label: "20,000 以上", multiplier: 1.15, employee: "95 折" },
+        ],
+      },
+    };
+
+    let currentMode = "service";
+    const familySelect = document.getElementById("familySelect");
+    const modelSelect = document.getElementById("modelSelect");
+    const modelControl = document.getElementById("modelControl");
+    const serviceList = document.getElementById("serviceList");
+    const assistLink = document.getElementById("assistLink");
+    const calculatorPanel = document.getElementById("calculatorPanel");
+    const costInput = document.getElementById("costInput");
+    const calculatorTitle = calculatorPanel.querySelector(".calculator-title");
+    const calculatorNote = calculatorPanel.querySelector(".calculator-note");
+    const partsPanel = document.getElementById("partsPanel");
+    const partInputs = [...document.querySelectorAll(".part-input")];
+    const partsTotal = document.getElementById("partsTotal");
+    const partsAllocationList = document.getElementById("partsAllocationList");
+    const quotationBuilderWrap = document.getElementById("quotationBuilderWrap");
+    const quotationModeTargets = [
+      assistLink,
+      partsPanel,
+      calculatorPanel,
+      document.querySelector(".content-grid"),
+      document.querySelector(".cta-row"),
+      document.querySelector(".small-print"),
+    ];
+
+    function setQuotationBuilderVisible(isVisible) {
+      quotationBuilderWrap.classList.toggle("is-visible", isVisible);
+      quotationModeTargets.forEach((element) => {
+        if (element) element.classList.toggle("quotation-mode-hidden", isVisible);
+      });
+    }
+
+    for (const family of iphoneFamilies) {
+      const option = document.createElement("option");
+      option.value = family;
+      option.textContent = familyLabels[family] || family;
+      familySelect.appendChild(option);
+    }
+
+    function formatCell(value) {
+      return `<span class="money">NT$${value}</span>`;
+    }
+
+    function renderModelOptions(family, preferredModel, familyFilter = null) {
+      const models = Object.entries(data)
+        .filter(([, entry]) => entry.family === family)
+        .map(([model]) => model);
+      modelSelect.innerHTML = "";
+      for (const model of models) {
+        const option = document.createElement("option");
+        option.value = model;
+        option.textContent = model;
+        modelSelect.appendChild(option);
+      }
+      const chosen = preferredModel && models.includes(preferredModel) ? preferredModel : models[0];
+      modelSelect.value = chosen || "";
+      modelSelect.disabled = models.length === 0;
+    }
+
+    function updateFamilyOptions(familyFilter = null) {
+      const filteredFamilies = familyFilter || (currentMode === "applecare" ? ipadFamilies : iphoneFamilies);
+      
+      modelControl.style.display = "";
+      familySelect.disabled = false;
+      modelSelect.disabled = false;
+      familySelect.innerHTML = "";
+      for (const family of filteredFamilies) {
+        const option = document.createElement("option");
+        option.value = family;
+        option.textContent = familyLabels[family] || family;
+        familySelect.appendChild(option);
+      }
+      
+      familySelect.value = filteredFamilies[0] || "";
+      renderModelOptions(filteredFamilies[0], null);
+      renderServices(modelSelect.value);
+    }
+
+    function updateAirPodsOptions(preferred = "AirPods Pro 1 (無線充電盒)") {
+      modelControl.style.display = "none";
+      calculatorPanel.classList.remove("is-visible");
+      familySelect.disabled = false;
+      familySelect.innerHTML = "";
+      for (const item of airPodsFamilies) {
+        const option = document.createElement("option");
+        option.value = item;
+        option.textContent = item;
+        familySelect.appendChild(option);
+      }
+
+      const chosen = airPodsFamilies.includes(preferred) ? preferred : airPodsFamilies[0];
+      familySelect.value = chosen;
+      modelSelect.innerHTML = "";
+      modelSelect.value = "";
+      modelSelect.disabled = true;
+      renderServices(chosen);
+    }
+
+    function renderOtherModelOptions(group, preferredModel = null) {
+      const isQuotationBuilder = group === "報價單";
+      setQuotationBuilderVisible(isQuotationBuilder);
+      if (isQuotationBuilder) {
+        modelControl.style.display = "none";
+        modelSelect.innerHTML = "";
+        modelSelect.value = "";
+        modelSelect.disabled = true;
+        serviceList.innerHTML = "";
+        return;
+      }
+
+      const models = otherServiceGroups[group] || [];
+      modelControl.style.display = models.length <= 1 ? "none" : "";
+      modelSelect.disabled = models.length <= 1;
+      modelSelect.innerHTML = "";
+      for (const model of models) {
+        const option = document.createElement("option");
+        option.value = model;
+        option.textContent = model;
+        modelSelect.appendChild(option);
+      }
+      const chosen = preferredModel && models.includes(preferredModel) ? preferredModel : models[0];
+      modelSelect.value = chosen || "";
+      renderServices(chosen || "");
+    }
+
+    function updateOtherOptions(preferredGroup = "其他", preferredModel = null) {
+      setQuotationBuilderVisible(false);
+      familySelect.disabled = false;
+      familySelect.innerHTML = "";
+      for (const group of Object.keys(otherServiceGroups)) {
+        const option = document.createElement("option");
+        option.value = group;
+        option.textContent = group;
+        familySelect.appendChild(option);
+      }
+      const group = otherServiceGroups[preferredGroup] ? preferredGroup : "其他";
+      familySelect.value = group;
+      renderOtherModelOptions(group, preferredModel);
+    }
+
+    function updateTierOptions(preferred = "Mac收費級距") {
+      modelControl.style.display = "none";
+      familySelect.disabled = false;
+      familySelect.innerHTML = "";
+      for (const type of tierCalculatorTypes) {
+        const option = document.createElement("option");
+        option.value = type;
+        option.textContent = type;
+        familySelect.appendChild(option);
+      }
+      const chosen = tierCalculatorTypes.includes(preferred) ? preferred : tierCalculatorTypes[0];
+      familySelect.value = chosen;
+      modelSelect.innerHTML = "";
+      modelSelect.value = "";
+      modelSelect.disabled = true;
+      costInput.value = "";
+      renderTierCalculator(chosen);
+    }
+
+    function roundToTens(value) {
+      return Math.round(value / 10) * 10;
+    }
+
+    function roundUpToHundreds(value) {
+      return Math.ceil(value / 100) * 100;
+    }
+
+    function formatNumber(value) {
+      return Math.round(value).toLocaleString("zh-TW");
+    }
+
+    function getPartCosts() {
+      return partInputs.map((input, index) => {
+        const value = Number(input.value);
+        return {
+          index: index + 1,
+          value: Number.isFinite(value) && value > 0 ? value : 0,
+        };
+      });
+    }
+
+    function renderPartAllocation(totalCost, customerQuote) {
+      const enteredParts = getPartCosts().filter((part) => part.value > 0);
+      if (!enteredParts.length || totalCost <= 0 || customerQuote <= 0) {
+        partsAllocationList.innerHTML = "";
+        return;
+      }
+
+      const rows = enteredParts.map((part) => {
+        const allocatedQuote = customerQuote * part.value / totalCost;
+        return `
+          <li class="service-row">
+            <span class="service-label">零件 ${part.index}：NT$${formatNumber(part.value)}</span>
+            <span class="service-price">分攤報價 NT$${formatNumber(allocatedQuote)}</span>
+          </li>
+        `;
+      });
+      partsAllocationList.innerHTML = rows.join("");
+    }
+
+    function syncPartCosts() {
+      const total = getPartCosts().reduce((sum, part) => sum + part.value, 0);
+      partsTotal.textContent = `NT$${formatNumber(total)}`;
+      if (currentMode === "tier" && familySelect.value === "Mac收費級距") {
+        if (total > 0) {
+          costInput.value = String(total);
+          costInput.readOnly = true;
+        } else {
+          costInput.value = "";
+          costInput.readOnly = false;
+        }
+        renderTierCalculator("Mac收費級距");
+      }
+    }
+
+    function renderAirPodsMaxCalculator() {
+      partsPanel.classList.remove("is-visible");
+      costInput.readOnly = false;
+      calculatorPanel.classList.add("is-visible");
+      calculatorTitle.textContent = "AirPods Max 重新報價 與 Beats系列";
+      calculatorNote.textContent = "輸入 GSX 成本價格。依 Numbers 計算方式：毛利率 20.11%，加計 5% 營業稅後四捨五入至十位數。";
+      costInput.placeholder = "輸入 GSX 成本價格";
+      costInput.setAttribute("aria-label", "GSX 成本價格");
+      const cost = Number(costInput.value);
+      const hasCost = Number.isFinite(cost) && cost >= 0 && costInput.value !== "";
+      const profit = hasCost ? cost * 0.2011 : 0;
+      const beforeTax = hasCost ? cost + profit : 0;
+      const afterTax = hasCost ? roundToTens(beforeTax * 1.05) : 0;
+      const rows = [
+        { label: "GSX 成本價格", value: hasCost ? formatNumber(cost) : "請輸入" },
+        { label: "毛利率", value: "20.11%", plain: true },
+        { label: "毛利額", value: hasCost ? formatNumber(profit) : "-", plain: !hasCost },
+        { label: "售價（未稅）", value: hasCost ? formatNumber(beforeTax) : "-", plain: !hasCost },
+        { label: "售價（含稅）", value: hasCost ? formatNumber(afterTax) : "-", plain: !hasCost },
+      ];
+      serviceList.innerHTML = rows.map((row) => `
+        <li class="service-row ${row.label === "售價（含稅）" ? "is-final-quote" : ""}">
+          <span class="service-label">${row.label}</span>
+          <span class="service-price">${row.plain ? row.value : (row.value === "請輸入" ? row.value : formatCell(row.value))}</span>
+        </li>
+      `).join("");
+    }
+
+    function renderTierCalculator(type = familySelect.value) {
+      const rule = tierCalculatorRules[type];
+      if (!rule) {
+        calculatorPanel.classList.remove("is-visible");
+        serviceList.innerHTML = "";
+        return;
+      }
+
+      calculatorPanel.classList.add("is-visible");
+      const isCpuTier = type === "Mac收費級距";
+      partsPanel.classList.toggle("is-visible", isCpuTier);
+      const enteredPartsTotal = getPartCosts().reduce((sum, part) => sum + part.value, 0);
+      if (isCpuTier && enteredPartsTotal > 0) {
+        costInput.value = String(enteredPartsTotal);
+        costInput.readOnly = true;
+        partsTotal.textContent = `NT$${formatNumber(enteredPartsTotal)}`;
+      } else if (isCpuTier) {
+        costInput.readOnly = false;
+      }
+      if (!isCpuTier) {
+        costInput.readOnly = false;
+        partsAllocationList.innerHTML = "";
+      }
+      calculatorTitle.textContent = type;
+      calculatorNote.textContent = `${rule.note} 低於 1,000 元之零件一律報價 NT$1,500。`;
+      costInput.placeholder = `輸入${rule.inputLabel}`;
+      costInput.setAttribute("aria-label", rule.inputLabel);
+
+      const cost = Number(costInput.value);
+      const hasCost = Number.isFinite(cost) && cost >= 0 && costInput.value !== "";
+      if (!hasCost) {
+        if (isCpuTier) {
+          renderPartAllocation(0, 0);
+        }
+        serviceList.innerHTML = `
+          <li class="service-row">
+            <span class="service-label">${rule.inputLabel}</span>
+            <span class="service-price">請輸入</span>
+          </li>
+        `;
+        return;
+      }
+
+      const tier = rule.tiers.find((candidate) => cost >= candidate.min && cost <= candidate.max);
+      const costWithTax = cost * 1.05;
+      const quote = tier.fixed || roundUpToHundreds(costWithTax * tier.multiplier);
+      const rows = [
+        { label: rule.inputLabel, value: formatNumber(cost), money: true },
+        { label: "適用金額級距", value: tier.label },
+        { label: `${rule.inputLabel}（含稅）`, value: formatNumber(costWithTax), money: true },
+        { label: "加成", value: tier.fixed ? "固定報價" : `${tier.multiplier.toFixed(2)} 倍` },
+        { label: "報價試算（含稅）", value: formatNumber(quote), money: true },
+      ];
+      if (tier.employee) {
+        rows.push({ label: "員工價", value: tier.employee });
+      }
+      serviceList.innerHTML = rows.map((row) => `
+        <li class="service-row ${row.label === "報價試算（含稅）" ? "is-final-quote" : ""}">
+          <span class="service-label">${row.label}</span>
+          <span class="service-price">${row.money ? formatCell(row.value) : row.value}</span>
+        </li>
+      `).join("");
+      if (isCpuTier) {
+        renderPartAllocation(cost, quote);
+      }
+    }
+
+    function renderServices(selectedModel) {
+      if (currentMode === "tier") {
+        renderTierCalculator(familySelect.value);
+        return;
+      }
+      partsPanel.classList.remove("is-visible");
+      costInput.readOnly = false;
+      if (currentMode === "other") {
+        if (selectedModel === "AirPods Max 重新報價") {
+          renderAirPodsMaxCalculator();
+          return;
+        }
+        calculatorPanel.classList.remove("is-visible");
+        const extraRows = otherServiceData[selectedModel] || [];
+        serviceList.innerHTML = extraRows.map((row) => `
+          <li class="service-row ${row.value === "X" ? "is-x" : ""}">
+            <span class="service-label">${row.label}</span>
+            <span class="service-price">${row.value === "X" ? "X" : formatCell(row.value)}</span>
+          </li>
+        `).join("");
+        return;
+      }
+
+      calculatorPanel.classList.remove("is-visible");
+      partsPanel.classList.remove("is-visible");
+      costInput.readOnly = false;
+      const entry = data[selectedModel];
+      if (!entry) {
+        serviceList.innerHTML = "";
+        return;
+      }
+
+      let rows = [];
+      const isSimpleServiceModel = [...ipadFamilies, ...appleWatchFamilies].includes(entry.family);
+
+      if (currentMode === "airpods") {
+        const isAirPodsMax = selectedModel === "AirPods Max 2" || selectedModel === "AirPods Max 1";
+        rows = isAirPodsMax
+          ? [
+              { key: "battery", label: "電池維修服務", value: entry.battery },
+              { key: "other", label: "其他損壞", value: entry.other },
+            ]
+          : [
+              { key: "battery", label: "電池維修服務", value: entry.battery },
+              { key: "podDamage", label: "AirPod 損壞 (左耳或右耳)", value: entry.podDamage },
+              { key: "caseDamage", label: "充電盒損壞", value: entry.caseDamage },
+              { key: "podLoss", label: "AirPod 遺失 (左耳或右耳)", value: entry.podLoss },
+              { key: "caseLoss", label: "充電盒遺失", value: entry.caseLoss },
+            ];
+      } else if (isSimpleServiceModel) {
+        rows = [
+          { key: "battery", label: "電池維修服務", value: entry.battery },
+          { key: "other", label: "其他損壞", value: entry.other },
+        ];
+      } else if (currentMode === "applecare") {
+        rows = [
+          { key: "battery", label: "電池維修服務", value: entry.acBattery },
+          { key: "screen", label: "螢幕維修", value: entry.acScreen },
+          { key: "backGlass", label: "背面玻璃維修", value: entry.acBackGlass },
+          { key: "whole", label: "其他損壞", value: entry.acWhole },
+        ];
+      } else {
+        rows = [
+          { key: "whole", label: "整機更換", value: entry.whole },
+          { key: "battery", label: "電池維修服務", value: entry.battery },
+          { key: "screen", label: "螢幕維修", value: entry.screen },
+          { key: "backSystem", label: "後置系統", value: entry.backSystem },
+          { key: "middleSystem", label: "中框系統", value: entry.middleSystem },
+          { key: "backGlass", label: "背面玻璃", value: entry.backGlass },
+          { key: "backGlassPlusScreen", label: "背面玻璃（含螢幕）", value: entry.backGlassPlusScreen },
+          { key: "frame", label: "機殼(17/Air需報電池)", value: entry.frame },
+          { key: "logicBoard", label: "主機板", value: entry.logicBoard },
+          { key: "truedepth", label: "TrueDepth Camera", value: entry.truedepth },
+          { key: "rearCamera", label: "後置相機", value: entry.rearCamera },
+          { key: "speaker", label: "揚聲器", value: entry.speaker },
+          { key: "receiver", label: "聽筒", value: entry.receiver },
+          { key: "mainParts", label: "主麥克風(Air為雙麥克風)", value: entry.mainParts },
+          { key: "taptic", label: "Taptic Engine", value: entry.taptic },
+        ];
+      }
+
+      serviceList.innerHTML = rows.map((row) => `
+        <li class="service-row ${row.value === "X" ? "is-x" : ""}" data-key="${row.key}">
+          <span class="service-label">${row.label}</span>
+          <span class="service-price">${row.value === "X" ? "X" : (String(row.value).startsWith("NT$") ? `<span class="money">${row.value}</span>` : formatCell(row.value))}</span>
+        </li>
+      `).join("");
+    }
+
+    function syncUI() {
+      if (currentMode !== "other") {
+        setQuotationBuilderVisible(false);
+      }
+      if (currentMode === "tier") {
+        costInput.value = "";
+        renderTierCalculator(familySelect.value);
+        return;
+      }
+      if (currentMode === "airpods") {
+        renderServices(familySelect.value);
+        return;
+      }
+      if (currentMode === "other") {
+        const group = familySelect.value;
+        const preferred = (otherServiceGroups[group] || []).includes(modelSelect.value) ? modelSelect.value : null;
+        renderOtherModelOptions(group, preferred);
+        return;
+      }
+      const family = familySelect.value;
+      const model = modelSelect.value;
+      const preferred = data[model] && data[model].family === family ? model : null;
+      renderModelOptions(family, preferred);
+      const activeModel = modelSelect.value;
+      renderServices(activeModel);
+    }
+
+    familySelect.addEventListener("change", syncUI);
+    modelSelect.addEventListener("change", () => {
+      renderServices(modelSelect.value);
+    });
+    costInput.addEventListener("input", () => {
+      if (currentMode === "tier") {
+        renderTierCalculator(familySelect.value);
+      } else {
+        renderAirPodsMaxCalculator();
+      }
+    });
+    partInputs.forEach((input) => input.addEventListener("input", syncPartCosts));
+
+    assistLink.addEventListener("click", (event) => {
+      event.preventDefault();
+      alert("請從上方下拉選單選擇你的裝置與機型。");
+    });
+
+    // Mode switching functionality
+    const modeServiceBtn = document.getElementById("modeServiceBtn");
+    const modeAppleCareBtn = document.getElementById("modeAppleCareBtn");
+    const modeAppleWatchBtn = document.getElementById("modeAppleWatchBtn");
+    const modeAirPodsBtn = document.getElementById("modeAirPodsBtn");
+    const modeOtherBtn = document.getElementById("modeOtherBtn");
+    const modeTierBtn = document.getElementById("modeTierBtn");
+    const sectionTitle = document.getElementById("sectionTitle");
+    const sectionDescription = document.getElementById("sectionDescription");
+
+    const allModeButtons = [modeServiceBtn, modeAppleCareBtn, modeAppleWatchBtn, modeAirPodsBtn, modeOtherBtn, modeTierBtn];
+
+    function setModeActive(activeBtn) {
+      setQuotationBuilderVisible(false);
+      allModeButtons.forEach(btn => {
+        if (btn === activeBtn) {
+          btn.classList.add("active");
+          btn.classList.remove("inactive");
+        } else {
+          btn.classList.add("inactive");
+          btn.classList.remove("active");
+        }
+      });
+    }
+
+    modeServiceBtn.addEventListener("click", () => {
+      setModeActive(modeServiceBtn);
+      currentMode = "service";
+      sectionTitle.textContent = "[i]Store 維修 快速估價與預約";
+      sectionDescription.textContent = "請先選擇 iPhone 裝置類型與機型，系統會顯示估計維修服務費用。";
+      updateFamilyOptions(iphoneFamilies);
+    });
+
+    modeAppleCareBtn.addEventListener("click", () => {
+      setModeActive(modeAppleCareBtn);
+      currentMode = "applecare";
+      sectionTitle.textContent = "[i]Store 維修 快速估價與預約";
+      sectionDescription.textContent = "請先選擇 iPad 裝置類型與機型，系統會顯示估計維修服務費用。";
+      updateFamilyOptions(ipadFamilies);
+    });
+
+    modeAppleWatchBtn.addEventListener("click", () => {
+      setModeActive(modeAppleWatchBtn);
+      currentMode = "applewatch";
+      sectionTitle.textContent = "[i]Store 維修 快速估價與預約";
+      sectionDescription.textContent = "請先選擇 Apple Watch 裝置類型與機型，系統會顯示估計維修服務費用。";
+      updateFamilyOptions(appleWatchFamilies);
+    });
+
+    modeAirPodsBtn.addEventListener("click", () => {
+      setModeActive(modeAirPodsBtn);
+      currentMode = "airpods";
+      sectionTitle.textContent = "[i]Store 維修 快速估價與預約";
+      sectionDescription.textContent = "請先選擇 AirPods 裝置類型，系統會顯示估計維修服務費用。";
+      updateAirPodsOptions();
+    });
+
+    modeOtherBtn.addEventListener("click", () => {
+      setModeActive(modeOtherBtn);
+      currentMode = "other";
+      sectionTitle.textContent = "[i]Store 報價單與其他維修服務";
+      sectionDescription.textContent = "請選擇報價單、其他裝置或 AirPods Max 與 Beats 系列，建立報價或查看維修費用。";
+      updateOtherOptions();
+    });
+
+    modeTierBtn.addEventListener("click", () => {
+      setModeActive(modeTierBtn);
+      currentMode = "tier";
+      sectionTitle.textContent = "[i]Store Mac 與 iPad SUR 維修報價";
+      sectionDescription.textContent = "請選擇 iPad SUR 或 Mac 收費級距，輸入成本後系統會依 Numbers 公式計算含稅報價。";
+      updateTierOptions();
+    });
+
+    const qbItemBox = document.getElementById("qbItems");
+    const qbPrintItems = document.getElementById("qbPrintItems");
+    const qbTotalHint = document.getElementById("qbTotalHint");
+    const qbPrintTotal = document.getElementById("qbPrintTotal");
+    const qbPrintNote = document.getElementById("qbPrintNote");
+    const qbFieldIds = ["qbRepairNo", "qbCustomerName", "qbPhone", "qbEmail", "qbCheckDate", "qbWarranty", "qbModelNo", "qbSerialNo"];
+
+    function qbFormatCurrency(value) {
+      const number = Number(String(value || "").replace(/,/g, "")) || 0;
+      return number.toLocaleString("zh-TW");
+    }
+
+    function qbToday() {
+      const date = new Date();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      return `${date.getFullYear()}-${month}-${day}`;
+    }
+
+    function qbCreateRow(index) {
+      const row = document.createElement("div");
+      row.className = "qb-item-row";
+      row.innerHTML = `
+        <div class="qb-row-index">${index}</div>
+        <input data-qb-key="partNo" placeholder="零件代號" />
+        <input data-qb-key="partName" placeholder="品名" />
+        <input data-qb-key="qty" type="number" min="0" step="1" placeholder="數量" />
+        <input data-qb-key="price" type="number" min="0" step="1" placeholder="價格" />`;
+      row.querySelectorAll("input").forEach(input => input.addEventListener("input", qbUpdatePreview));
+      return row;
+    }
+
+    function qbAddRows(count = 1) {
+      for (let index = 0; index < count; index += 1) {
+        qbItemBox.appendChild(qbCreateRow(qbItemBox.children.length + 1));
+      }
+      qbUpdatePreview();
+    }
+
+    function qbReadItems() {
+      return [...qbItemBox.children].map((row, index) => {
+        const item = { no: index + 1 };
+        row.querySelectorAll("input").forEach(input => {
+          item[input.dataset.qbKey] = input.value.trim();
+        });
+        const quantityInput = row.querySelector('[data-qb-key="qty"]');
+        if (item.partNo && (!item.qty || item.qty === "0")) {
+          item.qty = "1";
+          quantityInput.value = "1";
+        } else if (!item.partNo && item.qty === "0") {
+          item.qty = "";
+          quantityInput.value = "";
+        }
+        item.amount = Number(String(item.price || "").replace(/,/g, "")) || 0;
+        return item;
+      });
+    }
+
+    function qbUpdatePreview() {
+      qbFieldIds.forEach(id => {
+        document.querySelectorAll(`[data-qb-out="${id}"]`).forEach(output => {
+          output.textContent = document.getElementById(id).value || "";
+        });
+      });
+      document.querySelectorAll('[data-qb-out="qbFooterDate"]').forEach(output => {
+        output.textContent = document.getElementById("qbCheckDate").value || "";
+      });
+
+      const items = qbReadItems();
+      qbPrintItems.innerHTML = "";
+      items.forEach(item => {
+        const row = document.createElement("tr");
+        row.innerHTML = `<td>${item.no}</td><td>${item.partNo || ""}</td><td>${item.partName || ""}</td><td>${item.qty || ""}</td><td class="qb-total-price">${item.price ? qbFormatCurrency(item.price) : ""}</td>`;
+        qbPrintItems.appendChild(row);
+      });
+
+      const total = items.reduce((sum, item) => sum + item.amount, 0);
+      qbPrintTotal.textContent = qbFormatCurrency(total);
+      qbTotalHint.textContent = `總價：NT$${qbFormatCurrency(total)}`;
+      qbPrintNote.textContent = document.getElementById("qbServiceNote").value || "";
+    }
+
+    function qbSyncPrintOnly() {
+      qbUpdatePreview();
+      const printOnly = document.getElementById("quotationPrintOnly");
+      const paper = document.getElementById("qbQuotePaper").cloneNode(true);
+      paper.removeAttribute("id");
+      printOnly.innerHTML = "";
+      printOnly.appendChild(paper);
+    }
+
+    document.getElementById("qbAddRowBtn").addEventListener("click", () => qbAddRows(1));
+    document.getElementById("qbClearRowsBtn").addEventListener("click", () => {
+      qbItemBox.querySelectorAll("input").forEach(input => {
+        input.value = "";
+      });
+      qbUpdatePreview();
+    });
+    document.getElementById("qbPrintBtn").addEventListener("click", () => {
+      qbSyncPrintOnly();
+      window.print();
+    });
+    window.addEventListener("beforeprint", qbSyncPrintOnly);
+    qbFieldIds.forEach(id => document.getElementById(id).addEventListener("input", qbUpdatePreview));
+    document.getElementById("qbServiceNote").addEventListener("input", qbUpdatePreview);
+    document.getElementById("qbCheckDate").value = qbToday();
+    qbAddRows(5);
+
+    familySelect.value = "iPhone 17";
+    renderModelOptions("iPhone 17", "iPhone 17 Pro Max");
+    renderServices("iPhone 17 Pro Max");
+  </script>
+</body>
+</html>
